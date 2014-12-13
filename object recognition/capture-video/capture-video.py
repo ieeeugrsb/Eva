@@ -19,6 +19,7 @@
 import numpy as np
 import cv2
 
+#leer camara
 cap = cv2.VideoCapture(0)
 
 while(True):
