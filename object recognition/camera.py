@@ -20,24 +20,39 @@ import cv2
 
 
 class DualCamera(object):
+    """Wrapper object for cameras with two video sources.
+    
+    Attributes:
+        left_source: cv2.VideoCapture object.
+        right_source: cv2.VideoCapture object
+    """
     
     def __init__(self, left_device=0, right_device=1):
+        """Inits DualCamera.
+        
+        Args:
+            left_device: Left video source number.
+            right_device: Right video source number.
+        
+        Raises:
+            RuntimeError: A video source cannot be opened.
+        """
         self.left_source = cv2.VideoCapture(left_device)
         if not self.left_source.isOpened():
-            raise RuntimeError("Left video source cannot be openned")
+            raise RuntimeError("Left video source cannot be opened")
         self.right_source = cv2.VideoCapture(right_device)
         if not self.right_source.isOpened():
-            raise RuntimeError("Right video source cannot be openned")      
+            raise RuntimeError("Right video source cannot be opened")      
     
     def get_frames(self):
-        """Get left and right frames.
+        """Gets left and right frames.
 
         Returns:
-           array.  left frame
-           array.  right frame
+           array: Left frame
+           array: Right frame
     
         Raises:
-           RuntimeError
+           RuntimeError: Frame cannot be read
        """
 
         left_frame = None
@@ -45,21 +60,21 @@ class DualCamera(object):
         if self.left_source.isOpened():
             left_ret_val, left_frame = self.left_source.read()
             if left_ret_val is not True:
-                raise RuntimeError("Left frame cannot be readed")
+                raise RuntimeError("Left frame cannot be read")
         else:
             raise RuntimeError("Left video source is closed")
         
         if self.right_source.isOpened():
             right_ret_val, right_frame = self.right_source.read()
             if right_ret_val is not True:
-                raise RuntimeError("Right frame cannot be readed")
+                raise RuntimeError("Right frame cannot be read")
         else:
             raise RuntimeError("Right video source is closed")
         
         return left_frame, right_frame
     
     def release(self):
-        """Close video sources."""
+        """Closes video sources."""
         self.left_source.release()
         self.right_source.release()
 
