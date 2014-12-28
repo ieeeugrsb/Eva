@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+"""This module contains objects and functions related to video sources"""
+
 # Eva - Object recogniton
 # Copyright (C) 2014 Rafael Bailón-Ruiz <rafaelbailon@ieee.org>
 #
@@ -21,19 +23,19 @@ import cv2
 
 class DualCamera(object):
     """Wrapper object for cameras with two video sources.
-    
+
     Attributes:
         left_source: cv2.VideoCapture object.
         right_source: cv2.VideoCapture object
     """
-    
+
     def __init__(self, left_device=0, right_device=1):
         """Inits DualCamera.
-        
+
         Args:
             left_device: Left video source number.
             right_device: Right video source number.
-        
+
         Raises:
             RuntimeError: A video source cannot be opened.
         """
@@ -42,15 +44,15 @@ class DualCamera(object):
             raise RuntimeError("Left video source cannot be opened")
         self.right_source = cv2.VideoCapture(right_device)
         if not self.right_source.isOpened():
-            raise RuntimeError("Right video source cannot be opened")      
-    
+            raise RuntimeError("Right video source cannot be opened")
+
     def get_frames(self):
         """Gets left and right frames.
 
         Returns:
            array: Left frame
            array: Right frame
-    
+
         Raises:
            RuntimeError: Frame cannot be read
        """
@@ -63,38 +65,42 @@ class DualCamera(object):
                 raise RuntimeError("Left frame cannot be read")
         else:
             raise RuntimeError("Left video source is closed")
-        
+
         if self.right_source.isOpened():
             right_ret_val, right_frame = self.right_source.read()
             if right_ret_val is not True:
                 raise RuntimeError("Right frame cannot be read")
         else:
             raise RuntimeError("Right video source is closed")
-        
+
         return left_frame, right_frame
-    
+
     def release(self):
         """Closes video sources."""
         self.left_source.release()
         self.right_source.release()
 
-if __name__ == "__main__":
+def _test():
+    """DualCamera test function"""
     #leer camara
     cap = DualCamera()
-    
-    while(True):
+
+    while True:
         # Capture frame-by-frame
-        left_frame, right_frame = cap.get_frames()
-    
+        left_f, right_f = cap.get_frames()
+
         # Our operations on the frame come here
-        gray_left = cv2.cvtColor(left_frame, cv2.COLOR_BGR2GRAY)
-    
+        gray_left = cv2.cvtColor(left_f, cv2.COLOR_BGR2GRAY)
+
         # Display the resulting frame
-        cv2.imshow('frame_left',gray_left)
-        cv2.imshow('frame_right',right_frame)
+        cv2.imshow('frame_left', gray_left)
+        cv2.imshow('frame_right', right_f)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-    
+
     # When everything done, release the capture
     cap.release()
     cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    _test()
