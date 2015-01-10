@@ -26,10 +26,10 @@ class DualCamera(object):
 
     Attributes:
         left_source: cv2.VideoCapture object.
-        right_source: cv2.VideoCapture object
+        right_source: cv2.VideoCapture object.
     """
 
-    def __init__(self, left_device=0, right_device=1):
+    def __init__(self, left_device=0, right_device=1, size=(320, 240)):
         """Inits DualCamera.
 
         Args:
@@ -46,6 +46,12 @@ class DualCamera(object):
         if not self.right_source.isOpened():
             raise RuntimeError("Right video source cannot be opened")
 
+        self.left_source.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, size[0])
+        self.left_source.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, size[1])
+
+        self.right_source.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, size[0])
+        self.right_source.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, size[1])
+
     def get_frames(self):
         """Gets left and right frames.
 
@@ -57,19 +63,24 @@ class DualCamera(object):
            RuntimeError: Frame cannot be read
        """
 
+        left_grab_ret_val = self.left_source.grab()
+        right_grab_ret_val = self.right_source.grab()
+
         left_frame = None
         right_frame = None
         if self.left_source.isOpened():
-            left_ret_val, left_frame = self.left_source.read()
+            left_ret_val, left_frame = self.left_source.retrieve()
             if left_ret_val is not True:
-                raise RuntimeError("Left frame cannot be read")
+                pass
+#                raise RuntimeError("Left frame cannot be read")
         else:
             raise RuntimeError("Left video source is closed")
 
         if self.right_source.isOpened():
-            right_ret_val, right_frame = self.right_source.read()
+            right_ret_val, right_frame = self.right_source.retrieve()
             if right_ret_val is not True:
-                raise RuntimeError("Right frame cannot be read")
+                pass
+#                raise RuntimeError("Right frame cannot be read")
         else:
             raise RuntimeError("Right video source is closed")
 
@@ -83,7 +94,7 @@ class DualCamera(object):
 def _test():
     """DualCamera test function"""
     #leer camara
-    cap = DualCamera()
+    cap = DualCamera(left_device=1, right_device=2)
 
     while True:
         # Capture frame-by-frame
