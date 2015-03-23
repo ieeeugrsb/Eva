@@ -14,7 +14,7 @@ HCSR04 ultrasonidos(TRIG, ECHO, num_sensors);
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("HCSR04_v0.160215 library testing...");
+  Serial.println("HCSR04_Multiple_Sensors library testing...");
   delay(1000);
   ultrasonidos.Test(TRIG, ECHO);
 }
