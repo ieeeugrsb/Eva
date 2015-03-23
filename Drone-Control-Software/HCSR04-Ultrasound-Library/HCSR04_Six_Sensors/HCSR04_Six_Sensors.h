@@ -3,11 +3,11 @@
 **  Ultrasound modules.                                                **
 **                                                                     **
 **  Created by Jesus Rodriguez Venzal, IEEE Student Branch of Granada  **
-**  03/Mar/2015                                                        **
+**  17/Mar/2015                                                        **
 ************************************************************************/
 
-#ifndef HCSR04_Multiple_Sensors_h
-#define HCSR04_Multiple_Sensors_h
+#ifndef HCSR04_Six_Sensors_h
+#define HCSR04_Six_Sensors_h
 
 #include "Arduino.h"
 
@@ -15,15 +15,22 @@ class HCSR04
 {
 public:
 
-  HCSR04(int trig_in[],int echo_in[],int num_sensores);
-  void Reading(int distance[]);
+  HCSR04(int trig_in[],int echo_in[]);
+  void Reading();
   void Test(int trig_outside[], int echo_outside[]);
+  int TOP;
+  int BOTTOM;
+  int LEFT;
+  int RIGHT;
+  int REAR;
+  int FRONT;
 
 private:
 
-  int *triger;
-  int *echo;
+  int *_triger;
+  int *_echo;
   int _number_sensors;
+  int _distance[6];
 
 };
 
