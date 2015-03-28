@@ -91,10 +91,21 @@ def detect_green_blob(frame):
     '''
     # define range of green color in HSV
 
-    lower_green = np.array([40,75,75])
-    upper_green = np.array([80,255,255])
+    lower_green = np.array([90,75,75])
+    upper_green = np.array([130,255,255])
 
     return color_detector(frame, lower_green, upper_green)
+
+def detect_yellow_blob(frame):
+    '''
+    Finds green blobs on image and returns a masked image and its mask
+    '''
+    # define range of yellow color in HSV
+
+    lower_yellow = np.array([30,50,75])
+    upper_yellow = np.array([80,255,255])
+
+    return color_detector(frame, lower_yellow, upper_yellow)
 
 if __name__ == "__main__":
 
