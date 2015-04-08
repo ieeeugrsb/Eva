@@ -104,7 +104,7 @@ class Contour(object):
             logging.getLogger(__name__).info("".join(("Circle. Pos:",str((circ_x, circ_y))," Radius:", str(self.circ_radius))))
     
     def fit_ractangle(self):
-    '''Try to fit a rectangle.'''
+        '''Try to fit a rectangle.'''
         
         self.circ_pos, self.circ_radius = (0.0, 0.0), 0.0
         # Select contour
