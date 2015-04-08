@@ -27,6 +27,15 @@ logger = logging.getLogger(__name__)
 VIDEO_DEVICE = 1
 
 def main():
+
+    def circle():
+        contour.fit_circle()
+        cv2.imshow('circle',contour.draw_circle(image=frame.copy()))
+
+    def rectangle():
+        contour.fit_rectangle()
+        #cv2.imshow('circle',contour.draw_rectangle(image=frame.copy()))
+
     source = cv2.VideoCapture(VIDEO_DEVICE)
     
     looping = False
@@ -49,23 +58,22 @@ def main():
                 break
         
         # Detect color
-        res, mask = color_detector.detect_yellow_blob(frame)
+        res, mask = color_detector.detect_red_blob(frame)
         
         if frame is not None:
             cv2.imshow('frame',frame)
         if mask is not None:
             cv2.imshow('mask',mask)
-            
+        
         # Extract contour
-        circle_contour = shape_extraction.Contour(mask.copy())
+        contour = shape_extraction.Contour(mask.copy())
         
-        circle_contour.find()
-        cv2.imshow('contours',circle_contour.draw())
-        circle_contour.fit_circle()
-        cv2.imshow('circle',circle_contour.draw_circle(image=frame.copy()))
-        
+        contour.find()
+        cv2.imshow('contours',contour.draw())
+        rectangle()
 
 if __name__ == "__main__":
+    logging.getLogger(__name__).setLevel(logging.INFO)
     main()
 
 
