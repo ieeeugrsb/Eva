@@ -34,7 +34,7 @@ def main():
 
     def rectangle():
         contour.fit_rectangle()
-        #cv2.imshow('circle',contour.draw_rectangle(image=frame.copy()))
+        cv2.imshow('rectangle',contour.draw_rectangle(image=frame.copy()))
 
     source = cv2.VideoCapture(VIDEO_DEVICE)
     

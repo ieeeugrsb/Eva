@@ -37,8 +37,12 @@ class Contour(object):
         self.cnt_index = 0
         self.contours = None
         self.hierarchy = None
-        self.circ_pos = (0.0,0.0)
+        self.circ_pos = (0.0, 0.0) # (x,y)
         self.circ_radius = 0.0
+        self.centroid = (0.0, 0.0) # (x,y)
+        self.size = (0.0, 0.0) # (width, height)
+        self.angle = 0.0 # in degrees
+        self.rectangle = []
 
     def find(self):
         '''Find contours on binary image.
@@ -104,12 +108,8 @@ class Contour(object):
         img_rect = image
         if img_rect is None:
             img_rect = self.img.copy()
-            
-        ### Not in opencv 2.x implement this function ###
-        #box = cv2.boxPoints(self.rect)
-        #box = np.int0(box)
-        ###
-        cv2.drawContours(im_rect,[box],0,color,2)
+
+        cv2.drawContours(img_rect,[np.int0(self.rectangle)],0,color,2)
         
         return img_rect
     
@@ -135,10 +135,10 @@ class Contour(object):
             M = cv2.moments(self.contours[0])
             if M['m00'] == 0:
                 return
-            self.centroid_x = int(M['m10']/M['m00'])
-            self.centroid_y = int(M['m01']/M['m00'])
-            self.rect = cv2.minAreaRect(self.contours[0])
-            print "".join(("cx", str(self.centroid_x), " cy", str(self.centroid_y), " rect", str(self.rect)))
+            self.centroid, self.size, self.angle = cv2.minAreaRect(self.contours[0])
+            self.rectangle = Contour.boxPoints(self.centroid, self.size, self.angle)
+            
+            logging.getLogger(__name__).info("".join(("centroid:", str(self.centroid), " size:", str(self.size), " angle:", str(self.angle))))
     
     @classmethod
     def boxPoints(cls, center, size, angle):
