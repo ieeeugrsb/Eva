@@ -40,7 +40,7 @@ def color_detector(src, color_lower, color_upper):
     mask = cv2.inRange(hsv, color_lower, color_upper)
 
     # Erosion + dilation to reduce noise
-    kernel = np.ones((1, 1), np.uint8)
+    kernel = np.ones((3, 3), np.uint8)
     mask_dilated = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
 
     # Bitwise-AND mask and original image

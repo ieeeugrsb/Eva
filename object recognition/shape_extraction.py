@@ -129,14 +129,14 @@ class Contour(object):
     def fit_rectangle(self):
         '''Try to fit a rectangle.'''
         
-        self.circ_pos, self.circ_radius = (0.0, 0.0), 0.0
+        bigst_area = 0
         # Select contour
-        if len(self.contours) > 0:
-            M = cv2.moments(self.contours[0])
-            if M['m00'] == 0:
-                return
-            self.centroid, self.size, self.angle = cv2.minAreaRect(self.contours[0])
-            self.rectangle = Contour.boxPoints(self.centroid, self.size, self.angle)
+        for cnt in self.contours:
+            M = cv2.moments(cnt)
+            if M['m00'] > bigst_area:
+                bigst_area = M['m00']
+                self.centroid, self.size, self.angle = cv2.minAreaRect(cnt)
+                self.rectangle = Contour.boxPoints(self.centroid, self.size, self.angle)
             
             logging.getLogger(__name__).info("".join(("centroid:", str(self.centroid), " size:", str(self.size), " angle:", str(self.angle))))
     
