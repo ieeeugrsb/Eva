@@ -139,7 +139,33 @@ class Contour(object):
             self.centroid_y = int(M['m01']/M['m00'])
             self.rect = cv2.minAreaRect(self.contours[0])
             print "".join(("cx", str(self.centroid_x), " cy", str(self.centroid_y), " rect", str(self.rect)))
-
+    
+    @classmethod
+    def boxPoints(cls, center, size, angle):
+        '''Find the four vertices of a rotated rect. 
+        
+        Args:
+            center: (x,y) coordinates of rectangle center.
+            size: (width, height) of rectangle.
+            angle: rotation angle in degrees.
+        
+        Returns:
+            vertices: list of consecutive vertices.
+            
+        '''
+        
+        _angle = angle*np.pi/180.;
+        b = np.cos(_angle)*0.5;
+        a = np.sin(_angle)*0.5;
+        
+        v0 = (center[0] - a * size[1] - b * size[0], center[1] + b * size[1] - a * size[0])
+        v1 = (center[0] + a * size[1] - b * size[0], center[1] - b * size[1] - a * size[0])
+        v2 = (2 * center[0] - v0[0], 2 * center[1] - v0[1])
+        v3 = (2 * center[0] - v1[0], 2 * center[1] - v1[1])
+        
+        vertices = [v0, v1, v2, v3]
+        
+        return vertices
 
 
 if __name__ == "__main__":
