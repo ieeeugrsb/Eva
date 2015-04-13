@@ -19,6 +19,7 @@ public:
   float acceleration_z();
 
 private:
+  
   float _Delta_velocidad_x;
   float _velocidad_x;
   float _accel_x_t_2;
@@ -29,7 +30,11 @@ private:
   float _time_x_t_2;
   
   float _accel_x_imu;
-  float _g_x_imu;
+  float _gravity_x_imu;
+  float _accel_y_imu;
+  float _gravity_y_imu;
+  float _accel_z_imu;
+  float _gravity_z_imu;
   
   float _Delta_velocidad_y;
   float _velocidad_y;
@@ -45,6 +50,7 @@ private:
   float _accel_z_t_2;
   float _accel_z_t_1;
   float _accel_z_t;
+  float _accel_z;
   float _time_z_t;
   float _time_z_t_1;
   float _time_z_t_2;
