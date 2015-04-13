@@ -31,7 +31,7 @@ void loop()
 {
   Serial.println("BEGINING TEST");
   Serial.println("=============================");
-  Serial.print(IMU.velocidad_x()); 
-  Serial.println(" m/s");
+  Serial.print(IMU.acceleration_z()); 
+  Serial.println(" m^2/s");
   delay(2000);
 }
