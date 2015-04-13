@@ -13,7 +13,7 @@ Adafruit_LSM303_Accel_Unified accel = Adafruit_LSM303_Accel_Unified(54321);
 Adafruit_LSM303_Mag_Unified   mag   = Adafruit_LSM303_Mag_Unified(30302);
 Adafruit_9DOF                dof   = Adafruit_9DOF();
 
-IMU_Data::IMU_Data(){
+IMU_Data::IMU_Data() {
   _Delta_velocidad_x = 0.0;
   _velocidad_x = 0.0;
   _accel_x_t_2 = 0.0;
@@ -42,110 +42,134 @@ IMU_Data::IMU_Data(){
   _time_z_t_2 = 0.0;
 };
 
-void IMU_Data::Initialicing(){  
-  if(!accel.begin())
+void IMU_Data::Initialicing() {
+  if (!accel.begin())
   {
     /* There was a problem detecting the ADXL345 ... check your connections */
     Serial.println("Ooops, no LSM303 detected ... Check your wiring!");
-    while(1);
+    while (1);
   }
 
-  if(!mag.begin())
+  if (!mag.begin())
   {
     /* There was a problem detecting the LSM303 ... check your connections */
     Serial.println("Ooops, no LSM303 detected ... Check your wiring!");
-    while(1);
-  }  
+    while (1);
+  }
 
-  sensors_event_t event; 
-  accel.getEvent(&event);
+  sensors_event_t mag_event;
+  
 };
 
 
-float IMU_Data::acceleration_x(){
-  sensors_event_t event; 
-  accel.getEvent(&event);
+float IMU_Data::acceleration_x() {
+  sensors_event_t accel_event;
+  sensors_vec_t   orientation;
+  accel.getEvent(&accel_event);
 
-  return event.acceleration.x;
+  if (dof.accelGetOrientation(&accel_event, &orientation))
+  {
+    _gravity_x_imu = sin((orientation.pitch) * 3.14159 / 180) * 9.807;
+    if (-0.01 <= (accel_event.acceleration.x - _gravity_x_imu) && (accel_event.acceleration.x - _gravity_x_imu) <= 0.01) {
+      _accel_x_imu = 0.0;
+    }
+    else {
+      _accel_x_imu = (accel_event.acceleration.x - _gravity_x_imu);
+    }
+   // _accel_x_t = _accel_x_imu / cos(orientation.pitch * 3.14159 / 180);
+  }
+  
+  return _accel_x_imu / cos(orientation.pitch * 3.14159 / 180);
 }
 
 
-float IMU_Data::acceleration_y(){
-  sensors_event_t event; 
-  accel.getEvent(&event);
+float IMU_Data::acceleration_y() {
+  sensors_event_t accel_event;
+  sensors_vec_t   orientation;
+  accel.getEvent(&accel_event);
+  
+  if (dof.accelGetOrientation(&accel_event, &orientation))
+  {
+    _gravity_y_imu = sin((orientation.roll) * 3.14159 / 180) * 9.807;
+    if (-0.01 <= (accel_event.acceleration.y - _gravity_y_imu) && (accel_event.acceleration.y - _gravity_y_imu) <= 0.01) {
+      _accel_y_imu = 0.0;
+    }
+    else {
+      _accel_y_imu = (accel_event.acceleration.y - _gravity_y_imu);
+    }
+    //_accel_y_t = _accel_y_imu / cos(orientation.roll * 3.14159 / 180);
+  }
 
-  return event.acceleration.y;
+  return _accel_y_imu / cos(orientation.roll * 3.14159 / 180);
 }
 
 
-float IMU_Data::acceleration_z(){
-  sensors_event_t event; 
-  accel.getEvent(&event);
-
-  return (event.acceleration.z);
+float IMU_Data::acceleration_z() {
+  sensors_event_t accel_event;
+  sensors_vec_t   orientation;
+  accel.getEvent(&accel_event);
+  
+  if (dof.accelGetOrientation(&accel_event, &orientation))
+  {
+    //Calculate trigonometric functions of the Z axis angle
+    float _sine2_z_angle = sin((orientation.roll) * 3.14159 / 180) * sin((orientation.roll) * 3.14159 / 180) + sin((orientation.pitch) * 3.14159 / 180) * sin((orientation.pitch) * 3.14159 / 180);
+    float _sine_z_angle = sqrt(_sine2_z_angle);
+    float _cosine2_z_angle = 1 - _sine2_z_angle;
+    float _cosine_z_angle = sqrt(_cosine2_z_angle);
+    
+    _gravity_z_imu = 9.807 * _cosine_z_angle;
+    if (-0.05 <= (abs(accel_event.acceleration.z) - _gravity_z_imu) && (abs(accel_event.acceleration.z) - _gravity_z_imu) <= 0.05) {
+      _accel_z_imu = 0.0;
+    }
+    else {
+      _accel_z_imu = accel_event.acceleration.z - _gravity_z_imu;
+    }
+    _accel_z = _accel_z_imu / _cosine_z_angle;
+  }
+  Serial.println(_gravity_z_imu);
+  Serial.println(accel_event.acceleration.z);
+  return _accel_z;
 }
 
 
-float IMU_Data::velocidad_x(){
-
-  //sensors_event_t event; 
-  //accel.getEvent(&event);
+float IMU_Data::velocidad_x() {
 
   //Factor de gravedad
   sensors_event_t accel_event;
-  sensors_event_t mag_event;
   sensors_vec_t   orientation;
   accel.getEvent(&accel_event);
 
   _accel_x_t_2 = _accel_x_t_1;
   _accel_x_t_1 = _accel_x_t;
-  _accel_x_t = 0.0;
-  
+
   if (dof.accelGetOrientation(&accel_event, &orientation))
   {
-    _g_x_imu = cos((90-orientation.pitch) * 2 *3.14159 /360)*9.807;
-    if (-0.01 <= (accel_event.acceleration.x - _g_x_imu) && (accel_event.acceleration.x - _g_x_imu) <= 0.01){
+    _gravity_x_imu = sin((orientation.pitch) * 3.14159 / 180) * 9.807;
+    if (-0.01 <= (accel_event.acceleration.x - _gravity_x_imu) && (accel_event.acceleration.x - _gravity_x_imu) <= 0.01) {
       _accel_x_imu = 0.0;
     }
-    else{
-      _accel_x_imu = (accel_event.acceleration.x - _g_x_imu);
+    else {
+      _accel_x_imu = (accel_event.acceleration.x - _gravity_x_imu);
     }
-    _accel_x_t = _accel_x_imu * cos(orientation.pitch * 2 * 3.14159 /360);
-    /*if (-0.3 <= _accel_x_t && _accel_x_t <= 0.3){
-     _accel_x_t = 0;
-     }*/
-    
-    /*Serial.print("Pitch = ");
-    Serial.println(orientation.pitch);
-    Serial.print("Medidad IMU= ");
-    Serial.print(accel_event.acceleration.x);
-    Serial.println(" m/s^2");
-    Serial.print("Gravedad eje X IMU = ");
-    Serial.print(_g_x_imu);
-    Serial.println(" m/s^2");
-    Serial.print("Aceleracion sin gravedad eje X IMU = ");
-    Serial.print(_accel_x_imu);
-    Serial.println(" m/s^2");
-    Serial.print("Aceleracion eje X GLOBAL = ");
-    Serial.print(_accel_x_t);
-    Serial.println(" m/s^2");*/
-    Serial.print("#S|IMULOG|[");
-    Serial.print(String(orientation.pitch));
-    Serial.print(",");
-    Serial.print(String(accel_event.acceleration.x));
-    Serial.print(",");
-    Serial.print(String(_g_x_imu));
-    Serial.print(",");
-    Serial.print(String(_accel_x_imu));
-    Serial.print(",");
-    Serial.print(String(_accel_x_t));
-    Serial.println("]#");
+    _accel_x_t = _accel_x_imu / cos(orientation.pitch * 3.14159 / 180);
   }
+
+  Serial.print("#S|IMULOG|[");
+  Serial.print(String(orientation.pitch));
+  Serial.print(",");
+  Serial.print(String(accel_event.acceleration.x));
+  Serial.print(",");
+  Serial.print(String(_gravity_x_imu));
+  Serial.print(",");
+  Serial.print(String(_accel_x_imu));
+  Serial.print(",");
+  Serial.print(String(_accel_x_t));
+  Serial.println("]#");
 
   _time_x_t = millis();
 
   //Formula de Simpson para integracion numerica
-  _Delta_velocidad_x =((_time_x_t - _time_x_t_2)/(6*1000)) * (_accel_x_t_2 + 4*_accel_x_t_1 + _accel_x_t);
+  _Delta_velocidad_x = ((_time_x_t - _time_x_t_2) / (6 * 1000)) * (_accel_x_t_2 + 4 * _accel_x_t_1 + _accel_x_t);
   _velocidad_x = _velocidad_x + _Delta_velocidad_x;
 
   _time_x_t_2 = _time_x_t_1;
@@ -162,20 +186,31 @@ float IMU_Data::velocidad_x(){
 }
 
 
-float IMU_Data::velocidad_y(){
+float IMU_Data::velocidad_y() {
 
-  sensors_event_t event; 
-  accel.getEvent(&event);
+  sensors_event_t accel_event;
+  sensors_vec_t   orientation;
+  accel.getEvent(&accel_event);
 
   _accel_y_t_2 = _accel_y_t_1;
   _accel_y_t_1 = _accel_y_t;
-  ;
-  _accel_y_t = event.acceleration.y;
+
+  if (dof.accelGetOrientation(&accel_event, &orientation))
+  {
+    _gravity_y_imu = sin((orientation.roll) * 3.14159 / 180) * 9.807;
+    if (-0.01 <= (accel_event.acceleration.y - _gravity_y_imu) && (accel_event.acceleration.y - _gravity_y_imu) <= 0.01) {
+      _accel_y_imu = 0.0;
+    }
+    else {
+      _accel_y_imu = (accel_event.acceleration.y - _gravity_y_imu);
+    }
+    _accel_y_t = _accel_y_imu / cos(orientation.roll * 3.14159 / 180);
+  }
 
   _time_y_t = millis();
 
   //Formula de Simpson para integracion numerica
-  _Delta_velocidad_y =((_time_y_t - _time_y_t_2)/(6*1000)) * (_accel_y_t_2 + 4*_accel_y_t_1 + _accel_y_t);
+  _Delta_velocidad_y = ((_time_y_t - _time_y_t_2) / (6 * 1000)) * (_accel_y_t_2 + 4 * _accel_y_t_1 + _accel_y_t);
   _velocidad_y = _velocidad_y + _Delta_velocidad_y;
 
   _time_y_t_2 = _time_y_t_1;
@@ -192,20 +227,37 @@ float IMU_Data::velocidad_y(){
 }
 
 
-float IMU_Data::velocidad_z(){
+float IMU_Data::velocidad_z() {
 
-  sensors_event_t event; 
-  accel.getEvent(&event);
+  sensors_event_t accel_event;
+  sensors_vec_t   orientation;
+  accel.getEvent(&accel_event);
 
   _accel_z_t_2 = _accel_z_t_1;
   _accel_z_t_1 = _accel_z_t;
-  ;
-  _accel_z_t = event.acceleration.z;
+  
+  if (dof.accelGetOrientation(&accel_event, &orientation))
+  {
+    //Calculate trigonometric functions of the Z axis angle
+    float _sine2_z_angle = sin((orientation.roll) * 3.14159 / 180) * sin((orientation.roll) * 3.14159 / 180) + sin((orientation.pitch) * 3.14159 / 180) * sin((orientation.pitch) * 3.14159 / 180);
+    float _sine_z_angle = sqrt(_sine2_z_angle);
+    float _cosine2_z_angle = 1 - _sine2_z_angle;
+    float _cosine_z_angle = sqrt(_cosine2_z_angle);
+    
+    _gravity_z_imu = 9.807 * _cosine_z_angle;
+    if (-0.01 <= (accel_event.acceleration.z - _gravity_z_imu) && (accel_event.acceleration.z - _gravity_z_imu) <= 0.01) {
+      _accel_z_imu = 0.0;
+    }
+    else {
+      _accel_z_imu = (accel_event.acceleration.z - _gravity_z_imu);
+    }
+    _accel_z_t = _accel_z_imu / _cosine_z_angle;
+  }
 
   _time_z_t = millis();
 
   //Formula de Simpson para integracion numerica
-  _Delta_velocidad_z =((_time_z_t - _time_z_t_2)/(6*1000)) * (_accel_z_t_2 + 4*_accel_z_t_1 + _accel_z_t);
+  _Delta_velocidad_z = ((_time_z_t - _time_z_t_2) / (6 * 1000)) * (_accel_z_t_2 + 4 * _accel_z_t_1 + _accel_z_t);
   _velocidad_z = _velocidad_z + _Delta_velocidad_z;
 
   _time_z_t_2 = _time_z_t_1;
@@ -220,3 +272,4 @@ float IMU_Data::velocidad_z(){
 
   return _velocidad_z;
 }
+
