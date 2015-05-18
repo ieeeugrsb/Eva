@@ -68,10 +68,10 @@ def detect_red_blob(frame):
     # define range of red color in HSV
     # WARNING: red color hue wraps around 0 on HSV
 
-    lower_red_start = np.array([0,75,75])
+    lower_red_start = np.array([0,128,128])
     upper_red_start = np.array([10,255,255])
 
-    lower_red_end = np.array([165,75,75])
+    lower_red_end = np.array([170,128,128])
     upper_red_end = np.array([180,255,255])
 
     result_img_start, mask_start =  color_detector(frame, lower_red_start, upper_red_start)
