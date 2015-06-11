@@ -1,0 +1,8 @@
+#photos took with 3d_camera.py
+calib_img/*
+
+#photos took with undistort.py
+calib_img_rect/*
+
+#list of photos took with 3d_camera.py and undistort.py
+list.txt
