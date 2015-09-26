@@ -65,3 +65,12 @@ device=CONNECTOR_4
 T 40700 42300 5 10 1 1 0 0 1
 refdes=HC04
 }
+C 55200 42700 1 0 0 hc04.sym
+{
+T 55495 44600 5 10 0 0 0 0 1
+device=HC-SR04
+T 55200 43800 5 10 1 1 0 0 1
+refdes=U?
+T 55500 45000 5 10 0 0 0 0 1
+footprint=DIP14
+}

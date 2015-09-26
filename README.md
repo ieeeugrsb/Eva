@@ -16,6 +16,27 @@ Project is composed by four teams:
 * Communications (shared with Wall-E project)
 
 
+## Schematic Setup
+To work with the drone schematic you will need the latest version of the gEDA suite. You can follow these steps to compile on UNIX systems:
+
+```
+mkdir geda && cd geda
+
+git clone git://git.geda-project.org/geda-gaf.git
+cd geda-gaf
+./autogen.sh
+./configure --prefix=/opt/geda
+make
+sudo make install
+
+git clone git://git.geda-project.org/pcb.git
+cd pcb
+./autogen.sh
+./configure --prefix=/opt/geda
+make
+sudo make install
+```
+
 ## External resources
 * [Arduino gEDA Schematic Design](https://github.com/miloh/arduino-templates-gaf) by miloh.
 * [Git hooks for gEDA](https://github.com/BenBergman/.git_hooks) by Benjamin Bergman.
