@@ -1,0 +1,6 @@
+[submodule "git_hooks"]
+	path = git_hooks
+	url = https://github.com/BenBergman/.git_hooks
+[submodule "githooks"]
+	path = githooks
+	url = https://github.com/BenBergman/.git_hooks
