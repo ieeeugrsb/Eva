@@ -1,3 +1,6 @@
+# Arduino compiled data
+.build
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -68,4 +71,3 @@ missing
 *~
 .csync_journal*
 .owncloudsync.log
-

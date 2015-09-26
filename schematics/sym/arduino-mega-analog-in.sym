@@ -1,0 +1,186 @@
+v 20111231 2
+P 2400 3300 2100 3300 1 0 0
+{
+T 2200 3350 5 8 1 1 0 0 1
+pinnumber=1
+T 2200 3250 5 8 0 1 0 2 1
+pinseq=1
+T 2050 3300 9 8 1 1 0 6 1
+pinlabel=Analog pin 0
+T 2050 3300 5 8 0 1 0 8 1
+pintype=io
+}
+P 2400 3100 2100 3100 1 0 0
+{
+T 2200 3150 5 8 1 1 0 0 1
+pinnumber=2
+T 2200 3050 5 8 0 1 0 2 1
+pinseq=2
+T 2050 3100 9 8 1 1 0 6 1
+pinlabel=Analog pin 1
+T 2050 3100 5 8 0 1 0 8 1
+pintype=io
+}
+P 2400 2900 2100 2900 1 0 0
+{
+T 2200 2950 5 8 1 1 0 0 1
+pinnumber=3
+T 2200 2850 5 8 0 1 0 2 1
+pinseq=3
+T 2050 2900 9 8 1 1 0 6 1
+pinlabel=Analog pin 2
+T 2050 2900 5 8 0 1 0 8 1
+pintype=io
+}
+P 2400 2700 2100 2700 1 0 0
+{
+T 2200 2750 5 8 1 1 0 0 1
+pinnumber=4
+T 2200 2650 5 8 0 1 0 2 1
+pinseq=4
+T 2050 2700 9 8 1 1 0 6 1
+pinlabel=Analog pin 3
+T 2050 2700 5 8 0 1 0 8 1
+pintype=io
+}
+P 2400 2500 2100 2500 1 0 0
+{
+T 2200 2550 5 8 1 1 0 0 1
+pinnumber=5
+T 2200 2450 5 8 0 1 0 2 1
+pinseq=5
+T 2050 2500 9 8 1 1 0 6 1
+pinlabel=Analog pin 4
+T 2050 2500 5 8 0 1 0 8 1
+pintype=io
+}
+P 2400 2300 2100 2300 1 0 0
+{
+T 2200 2350 5 8 1 1 0 0 1
+pinnumber=6
+T 2200 2250 5 8 0 1 0 2 1
+pinseq=6
+T 2050 2300 9 8 1 1 0 6 1
+pinlabel=Analog pin 5
+T 2050 2300 5 8 0 1 0 8 1
+pintype=io
+}
+P 2400 2100 2100 2100 1 0 0
+{
+T 2200 2150 5 8 1 1 0 0 1
+pinnumber=7
+T 2200 2050 5 8 0 1 0 2 1
+pinseq=7
+T 2050 2100 9 8 1 1 0 6 1
+pinlabel=Analog pin 6
+T 2050 2100 5 8 0 1 0 8 1
+pintype=io
+}
+P 2400 1900 2100 1900 1 0 0
+{
+T 2200 1950 5 8 1 1 0 0 1
+pinnumber=8
+T 2200 1850 5 8 0 1 0 2 1
+pinseq=8
+T 2050 1900 9 8 1 1 0 6 1
+pinlabel=Analog pin 7
+T 2050 1900 5 8 0 1 0 8 1
+pintype=io
+}
+P 2400 1700 2100 1700 1 0 0
+{
+T 2200 1750 5 8 1 1 0 0 1
+pinnumber=9
+T 2200 1650 5 8 0 1 0 2 1
+pinseq=9
+T 2050 1700 9 8 1 1 0 6 1
+pinlabel=Analog pin 8
+T 2050 1700 5 8 0 1 0 8 1
+pintype=io
+}
+P 2400 1500 2100 1500 1 0 0
+{
+T 2200 1550 5 8 1 1 0 0 1
+pinnumber=10
+T 2200 1450 5 8 0 1 0 2 1
+pinseq=10
+T 2050 1500 9 8 1 1 0 6 1
+pinlabel=Analog pin 9
+T 2050 1500 5 8 0 1 0 8 1
+pintype=io
+}
+P 2400 1300 2100 1300 1 0 0
+{
+T 2200 1350 5 8 1 1 0 0 1
+pinnumber=11
+T 2200 1250 5 8 0 1 0 2 1
+pinseq=11
+T 2050 1300 9 8 1 1 0 6 1
+pinlabel=Analog pin 10
+T 2050 1300 5 8 0 1 0 8 1
+pintype=io
+}
+P 2400 1100 2100 1100 1 0 0
+{
+T 2200 1150 5 8 1 1 0 0 1
+pinnumber=12
+T 2200 1050 5 8 0 1 0 2 1
+pinseq=12
+T 2050 1100 9 8 1 1 0 6 1
+pinlabel=Analog pin 11
+T 2050 1100 5 8 0 1 0 8 1
+pintype=io
+}
+P 2400 900 2100 900 1 0 0
+{
+T 2200 950 5 8 1 1 0 0 1
+pinnumber=13
+T 2200 850 5 8 0 1 0 2 1
+pinseq=13
+T 2050 900 9 8 1 1 0 6 1
+pinlabel=Analog pin 12
+T 2050 900 5 8 0 1 0 8 1
+pintype=io
+}
+P 2400 700 2100 700 1 0 0
+{
+T 2200 750 5 8 1 1 0 0 1
+pinnumber=14
+T 2200 650 5 8 0 1 0 2 1
+pinseq=14
+T 2050 700 9 8 1 1 0 6 1
+pinlabel=Analog pin 13
+T 2050 700 5 8 0 1 0 8 1
+pintype=io
+}
+P 2400 500 2100 500 1 0 0
+{
+T 2200 550 5 8 1 1 0 0 1
+pinnumber=15
+T 2200 450 5 8 0 1 0 2 1
+pinseq=15
+T 2050 500 9 8 1 1 0 6 1
+pinlabel=Analog pin 14
+T 2050 500 5 8 0 1 0 8 1
+pintype=io
+}
+P 2400 300 2100 300 1 0 0
+{
+T 2200 350 5 8 1 1 0 0 1
+pinnumber=16
+T 2200 250 5 8 0 1 0 2 1
+pinseq=16
+T 2050 300 9 8 1 1 0 6 1
+pinlabel=Analog pin 15
+T 2050 300 5 8 0 1 0 8 1
+pintype=io
+}
+B 400 100 1700 3400 3 0 0 0 -1 -1 0 -1 -1 -1 -1 -1
+T 2800 3600 8 10 1 1 0 6 1
+refdes=U?
+T 400 3600 9 10 1 0 0 0 1
+Arduino-mega-analog in
+T 400 3800 5 10 0 0 0 0 1
+device=Arduino-mega-analog in
+T 400 4000 5 10 0 0 0 0 1
+numslots=0

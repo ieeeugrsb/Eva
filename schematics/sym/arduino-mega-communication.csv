@@ -1,0 +1,67 @@
+# This is the template file for creating symbols with tragesym						
+# every line starting with '#' is a comment line.						
+# save it as text file with tab separated cells and start tragesym						
+						
+[options]						
+# wordswap swaps labels if the pin is on the right side an looks like this:						
+"#   ""PB1 (CLK)"". That's useful for micro controller port labels"						
+# rotate_labels rotates the pintext of top and bottom pins						
+#   this is useful for large symbols like FPGAs with more than 100 pins						
+# sort_labels will sort the pins by it's labels						
+#   useful for address ports, busses, ...						
+wordswap	no					
+rotate_labels	no					
+sort_labels	no					
+generate_pinseq	yes					
+sym_width	1700					
+pinwidthvertical	200					
+pinwidthhorizontal	250					
+						
+[geda_attr]						
+# name will be printed in the top of the symbol						
+# if you have a device with slots, you'll have to use slot= and slotdef=						
+# use comment= if there are special information you want to add						
+version	20060113 1					
+name	Arduino-mega-communication					
+device	Arduino-mega-communication					
+refdes	U?					
+footprint						
+description						
+documentation						
+author	Ronald Miloh Alexnadre					
+numslots	0					
+dist-license						
+use-license						
+#slot	1					
+#slotdef	1:					
+#slotdef	2:					
+#slotdef	3:					
+#slotdef	4:					
+#comment						
+#comment						
+#comment						
+						
+[pins]						
+# tabseparated list of pin descriptions						
+#						
+# pinnr is the physical number of the pin						
+# seq is the pinseq= attribute, leave it blank if it doesn't matter						
+# type can be (in, out, io, oc, oe, pas, tp, tri, clk, pwr)						
+# style can be (line,dot,clk,dotclk,none). none if only want to add a net						
+# posit. can be (l,r,t,b) or empty for nets						
+# net specifies the name of the net. Vcc or GND for example.						
+# label represents the pinlabel.						
+#	"negation lines can be added with ""\_"" example: \_enable\_ "					
+#	"if you want to write a ""\"" use ""\\"" as escape sequence"					
+#						
+#pinnr	seq	type	style	posit.	net	label
+3	1	io	line	l	PE1 ( TXD0 )	Digital pin 1 (TX0)
+2	2	io	line	l	PE0 ( RXD0/PCINT8 )	Digital pin 0 (RX0)
+64	3	io	line	l	PJ1 ( TXD3/PCINT10 )	Digital pin 14 (TX3)
+63	4	io	line	l	PJ0 ( RXD3/PCINT9 )	Digital pin 15 (RX3)
+13	5	io	line	l	PH1 ( TXD2 )	Digital pin 16 (TX2)
+12	6	io	line	l	PH0 ( RXD2 )	Digital pin 17 (RX2)
+46	7	io	line	l	PD3 ( TXD1/INT3 )	Digital pin 18 (TX1)
+45	8	io	line	l	PD2 ( RXDI/INT2 )	Digital pin 19 (RX1)
+44	9	io	line	l	PD1 ( SDA/INT1 )	Digital pin 20 (SDA)
+43	10	io	line	l	PD0 ( SCL/INT0 )	Digital pin 21 (SCL)
