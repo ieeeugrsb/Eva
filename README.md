@@ -37,6 +37,12 @@ make
 sudo make install
 ```
 
+Then create or edit the file *~/.gEDA/gafrc* to add the new symbols:
+```
+(component-library "../sym")
+```
+Due to the relative path, if you want to use the *git hooks* for gEDA, you must make the commit inside the *schematics/sch* folder.
+
 ## External resources
 * [Arduino gEDA Schematic Design](https://github.com/miloh/arduino-templates-gaf) by miloh.
 * [Git hooks for gEDA](https://github.com/BenBergman/.git_hooks) by Benjamin Bergman.

@@ -47,19 +47,21 @@ pinnumber=4
 T 900 250 5 10 0 0 0 0 1
 pinseq=4
 }
-T 295 1900 8 10 0 0 0 0 1
+T 295 2200 8 10 0 0 0 0 1
 device=HC-SR04
-T 295 1700 8 10 0 0 0 0 1
+T 295 2000 8 10 0 0 0 0 1
 description=Ultrasonic sensor device
 T 0 1100 8 10 1 1 0 0 1
 refdes=U?
-T 300 1300 8 10 0 0 0 0 1
+T 300 1600 8 10 0 0 0 0 1
 numslots=1
-T 300 2100 8 10 0 0 0 0 1
+T 300 2400 8 10 0 0 0 0 1
 documentation=http://www.micropik.com/PDF/HCSR04.pdf
-T 300 2300 8 10 0 0 0 0 1
+T 300 2600 8 10 0 0 0 0 1
 footprint=DIP14
-T 300 1500 8 10 0 0 0 0 1
+T 300 1800 8 10 0 0 0 0 1
 slot=1
-T 300 1100 8 10 0 0 0 0 1
+T 300 1400 8 10 0 0 0 0 1
 slotdef=1:1,2,3,4
+T 300 1100 9 12 1 0 0 0 1
+HC-SR04
