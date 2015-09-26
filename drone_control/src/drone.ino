@@ -24,8 +24,8 @@ int incremento = 5;
 void write2motors(int value)
 {
     Serial.print("Writing "); Serial.println(value);
-    analogWrite(MOTOR_BL, value);
-    analogWrite(MOTOR_BR, value);
+    analogWrite(MOTOR_BL, value + 16);
+    analogWrite(MOTOR_BR, value + 13);
     analogWrite(MOTOR_FL, value);
     analogWrite(MOTOR_FR, value);
 }
@@ -34,8 +34,11 @@ void setup_motors()
 {
     // It's not necessary to set pin mode to use PWM.
 
-    // Set motors to position 0.
-    write2motors(value);
+    // Enter into working mode.
+    analogWrite(MOTOR_BL, 140);
+    analogWrite(MOTOR_BR, 140);
+    analogWrite(MOTOR_FL, 140);
+    analogWrite(MOTOR_FR, 140);
 }
 
 void setup()
