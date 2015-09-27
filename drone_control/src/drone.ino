@@ -13,32 +13,24 @@
   along with this file.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-const int MOTOR_BL = 12;    // PWM pin for Back-Left Motor
-const int MOTOR_BR = 11;    // PWM pin for Back-Right Motor
-const int MOTOR_FL = 10;    // PWM pin for Front-Left Motor
-const int MOTOR_FR =  9;    // PWM pin for Front-Right Motor
+#include "Motor.h"
 
-int value = 140;
+// Create motors instance and start in Working-Mode.
+Motor motor_bl(12); // Back-Left Motor
+Motor motor_br(11); // Back-Right Motor
+Motor motor_fl(10); // Front-Left Motor
+Motor motor_fr( 9); // Front-Right Motor
+
+int value = 0;
 int incremento = 5;
 
 void write2motors(int value)
 {
     Serial.print("Writing "); Serial.println(value);
-    analogWrite(MOTOR_BL, value + 16);
-    analogWrite(MOTOR_BR, value + 13);
-    analogWrite(MOTOR_FL, value);
-    analogWrite(MOTOR_FR, value);
-}
-
-void setup_motors()
-{
-    // It's not necessary to set pin mode to use PWM.
-
-    // Enter into working mode.
-    analogWrite(MOTOR_BL, 140);
-    analogWrite(MOTOR_BR, 140);
-    analogWrite(MOTOR_FL, 140);
-    analogWrite(MOTOR_FR, 140);
+    motor_bl.write(value + 14);
+    motor_br.write(value + 15);
+    motor_fl.write(value);
+    motor_fr.write(value);
 }
 
 void setup()
@@ -46,8 +38,8 @@ void setup()
     // Setup PC communication.
     Serial.begin(9600);
 
-    // Setup motors
-    setup_motors();
+    // Wait for motors going to working mode.
+    delay(2000);
 }
 
 void test_motor()
@@ -60,16 +52,16 @@ void test_motor()
     Serial.print(data);
     Serial.println(" to motor.");
 
-    analogWrite(MOTOR_FL, data);
+    motor_fl.write(data);
 }
 
 void loop()
 {
-    delay(2000);
+    if (value > 25 || value < 0)
+        incremento *= -1;
+
     value += incremento;
     write2motors(value);
 
-    if (value > 170 || value < 140) {
-        incremento *= -1;
-    }
+    delay(2000);
 }
