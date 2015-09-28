@@ -42,19 +42,6 @@ void setup()
     delay(2000);
 }
 
-void test_motor()
-{
-    int data = Serial.parseInt();
-    if (data <= 0)
-        return;
-
-    Serial.print("\nSending ");
-    Serial.print(data);
-    Serial.println(" to motor.");
-
-    motor_fl.write(data);
-}
-
 void loop()
 {
     if (value > 25 || value < 0)
