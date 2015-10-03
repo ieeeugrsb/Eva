@@ -1,7 +1,8 @@
 # Eva [<img alt="Join the chat at https://gitter.im/ieeeugrsb/Eva" src="https://badges.gitter.im/Join%20Chat.svg" align="right" />](https://gitter.im/ieeeugrsb/Eva?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 <p align="center">
-<a href="http://www.gnu.org/copyleft/gpl.html"><img alt="license" src="https://img.shields.io/badge/license-GPL%20V3-blue.svg?style=flat"  align="left"/></a>
+<a href="https://travis-ci.org/ieeeugrsb/Eva"><img alt="Build Status" src="https://travis-ci.org/ieeeugrsb/Eva.svg?branch=master" align="left" /></a>
+<a href="http://www.gnu.org/copyleft/gpl.html"><img alt="license" src="https://img.shields.io/badge/license-GPL%20V3-blue.svg?style=flat"/></a>
 <a href="https://github.com/fehmicansaglam/progressed.io"><img alt="20% done" src="http://progressed.io/bar/20" align="right" /></a>
 </p>
 
