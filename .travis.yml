@@ -14,6 +14,11 @@ before_install:
   - git submodule update --init --recursive
 
 install:
+# Install Arduino distribution
+  - wget http://arduino.cc/download.php?f=/arduino-1.6.1-linux64.tar.xz -O arduino-dist.tar.xz
+  - tar xf arduino-dist.tar.xz
+  - export ARDUINO_PATH=$(pwd)/arduino-1.6.1
+
 # Install Arturo -- Commad-line compiler for Arduino
   - git clone https://github.com/scottdarch/Arturo
   - mkdir -p $TRAVIS_BUILD_DIR/tools-env/lib/python2.7/site-packages/
@@ -23,7 +28,7 @@ install:
 
 script:
 # Compile Arduino sketches
-  - cd drone_control      && ano build && cd ..
-  - cd tests/check_motors && ano build && cd ..
-  - cd tests/serial2motor && ano build && cd ..
-  - cd tests/show_imu     && ano build && cd ..
+  - cd drone_control      && ano build --arduino-dist $ARDUINO_PATH && cd ..
+  - cd tests/check_motors && ano build --arduino-dist $ARDUINO_PATH && cd ..
+  - cd tests/serial2motor && ano build --arduino-dist $ARDUINO_PATH && cd ..
+  - cd tests/show_imu     && ano build --arduino-dist $ARDUINO_PATH && cd ..
