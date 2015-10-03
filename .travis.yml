@@ -15,9 +15,9 @@ before_install:
 
 install:
 # Install Arduino distribution
-  - wget http://arduino.cc/download.php?f=/arduino-1.6.1-linux64.tar.xz -O arduino-dist.tar.xz
+  - wget http://arduino.cc/download.php?f=/arduino-1.0.6-linux64.tgz -O arduino-dist.tar.xz
   - tar xf arduino-dist.tar.xz
-  - export ARDUINO_PATH=$(pwd)/arduino-1.6.1
+  - export ARDUINO_PATH=$(pwd)/arduino-1.0.6
 
 # Install Arturo -- Commad-line compiler for Arduino
   - git clone https://github.com/scottdarch/Arturo
@@ -28,11 +28,11 @@ install:
 
 script:
 # Compile Arduino sketch for dron control
-  - cd drone_control && ano build -m mega -d $ARDUINO_PATH && cd ..
+  - cd drone_control && ano build -d $ARDUINO_PATH && cd ..
 
 # Compile Arduino sketches for tests
   - cd tests
-  - cd check_motors && ano build -m mega -d $ARDUINO_PATH && cd ..
-  - cd serial2motor && ano build -m mega -d $ARDUINO_PATH && cd ..
-  - cd show_imu     && ano build -m mega -d $ARDUINO_PATH && cd ..
+  - cd check_motors  && ano build -d $ARDUINO_PATH && cd ..
+  - cd serial2motor  && ano build -d $ARDUINO_PATH && cd ..
+  - cd show_imu      && ano build -d $ARDUINO_PATH && cd ..
   - cd ..
