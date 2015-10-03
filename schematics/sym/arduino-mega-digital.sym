@@ -1,0 +1,408 @@
+v 20111231 2
+P 9100 2800 8800 2800 1 0 0
+{
+T 8895 2845 5 8 1 1 0 0 1
+pinnumber=61
+T 8900 2750 5 8 0 1 0 2 1
+pinseq=1
+T 8745 2795 9 8 1 1 0 6 1
+pinlabel=5V
+T 8750 2800 5 8 0 1 0 8 1
+pintype=pwr
+}
+P 9100 1600 8800 1600 1 0 0
+{
+T 8895 1645 5 8 1 1 0 0 1
+pinnumber=80
+T 8900 1550 5 8 0 1 0 2 1
+pinseq=2
+T 8745 1595 9 8 1 1 0 6 1
+pinlabel=5V
+T 8750 1600 5 8 0 1 0 8 1
+pintype=pwr
+}
+P 7900 4300 7900 4000 1 0 0
+{
+T 7850 4095 5 8 1 1 90 0 1
+pinnumber=78
+T 7850 4100 5 8 0 1 90 0 1
+pinseq=3
+T 7900 3945 9 8 1 1 90 6 1
+pinlabel=Digital pin 22
+T 7900 3950 5 8 0 1 90 6 1
+pintype=io
+}
+P 7900 100 7900 400 1 0 0
+{
+T 7850 305 5 8 1 1 90 6 1
+pinnumber=77
+T 7850 300 5 8 0 1 90 6 1
+pinseq=4
+T 7900 455 9 8 1 1 90 0 1
+pinlabel=Digital pin 23
+T 7900 450 5 8 0 1 90 0 1
+pintype=io
+}
+P 7525 4300 7525 4000 1 0 0
+{
+T 7475 4095 5 8 1 1 90 0 1
+pinnumber=76
+T 7475 4100 5 8 0 1 90 0 1
+pinseq=5
+T 7525 3945 9 8 1 1 90 6 1
+pinlabel=Digital pin 24
+T 7525 3950 5 8 0 1 90 6 1
+pintype=io
+}
+P 7525 100 7525 400 1 0 0
+{
+T 7475 305 5 8 1 1 90 6 1
+pinnumber=75
+T 7475 300 5 8 0 1 90 6 1
+pinseq=6
+T 7525 455 9 8 1 1 90 0 1
+pinlabel=Digital pin 25
+T 7525 450 5 8 0 1 90 0 1
+pintype=io
+}
+P 7150 4300 7150 4000 1 0 0
+{
+T 7100 4095 5 8 1 1 90 0 1
+pinnumber=74
+T 7100 4100 5 8 0 1 90 0 1
+pinseq=7
+T 7150 3945 9 8 1 1 90 6 1
+pinlabel=Digital pin 26
+T 7150 3950 5 8 0 1 90 6 1
+pintype=io
+}
+P 7150 100 7150 400 1 0 0
+{
+T 7100 305 5 8 1 1 90 6 1
+pinnumber=73
+T 7100 300 5 8 0 1 90 6 1
+pinseq=8
+T 7150 455 9 8 1 1 90 0 1
+pinlabel=Digital pin 27
+T 7150 450 5 8 0 1 90 0 1
+pintype=io
+}
+P 6775 4300 6775 4000 1 0 0
+{
+T 6725 4095 5 8 1 1 90 0 1
+pinnumber=72
+T 6725 4100 5 8 0 1 90 0 1
+pinseq=9
+T 6775 3945 9 8 1 1 90 6 1
+pinlabel=Digital pin 28
+T 6775 3950 5 8 0 1 90 6 1
+pintype=io
+}
+P 6775 100 6775 400 1 0 0
+{
+T 6725 305 5 8 1 1 90 6 1
+pinnumber=71
+T 6725 300 5 8 0 1 90 6 1
+pinseq=10
+T 6775 455 9 8 1 1 90 0 1
+pinlabel=Digital pin 29
+T 6775 450 5 8 0 1 90 0 1
+pintype=io
+}
+P 6400 4300 6400 4000 1 0 0
+{
+T 6350 4095 5 8 1 1 90 0 1
+pinnumber=60
+T 6350 4100 5 8 0 1 90 0 1
+pinseq=11
+T 6400 3945 9 8 1 1 90 6 1
+pinlabel=Digital pin 30
+T 6400 3950 5 8 0 1 90 6 1
+pintype=io
+}
+P 6400 100 6400 400 1 0 0
+{
+T 6350 305 5 8 1 1 90 6 1
+pinnumber=59
+T 6350 300 5 8 0 1 90 6 1
+pinseq=12
+T 6400 455 9 8 1 1 90 0 1
+pinlabel=Digital pin 31
+T 6400 450 5 8 0 1 90 0 1
+pintype=io
+}
+P 6025 4300 6025 4000 1 0 0
+{
+T 5975 4095 5 8 1 1 90 0 1
+pinnumber=58
+T 5975 4100 5 8 0 1 90 0 1
+pinseq=13
+T 6025 3945 9 8 1 1 90 6 1
+pinlabel=Digital pin 32
+T 6025 3950 5 8 0 1 90 6 1
+pintype=io
+}
+P 6025 100 6025 400 1 0 0
+{
+T 5975 305 5 8 1 1 90 6 1
+pinnumber=57
+T 5975 300 5 8 0 1 90 6 1
+pinseq=14
+T 6025 455 9 8 1 1 90 0 1
+pinlabel=Digital pin 33
+T 6025 450 5 8 0 1 90 0 1
+pintype=io
+}
+P 5650 4300 5650 4000 1 0 0
+{
+T 5600 4095 5 8 1 1 90 0 1
+pinnumber=56
+T 5600 4100 5 8 0 1 90 0 1
+pinseq=15
+T 5650 3945 9 8 1 1 90 6 1
+pinlabel=Digital pin 34
+T 5650 3950 5 8 0 1 90 6 1
+pintype=io
+}
+P 5650 100 5650 400 1 0 0
+{
+T 5600 305 5 8 1 1 90 6 1
+pinnumber=55
+T 5600 300 5 8 0 1 90 6 1
+pinseq=16
+T 5650 455 9 8 1 1 90 0 1
+pinlabel=Digital pin 35
+T 5650 450 5 8 0 1 90 0 1
+pintype=io
+}
+P 5275 4300 5275 4000 1 0 0
+{
+T 5225 4095 5 8 1 1 90 0 1
+pinnumber=54
+T 5225 4100 5 8 0 1 90 0 1
+pinseq=17
+T 5275 3945 9 8 1 1 90 6 1
+pinlabel=Digital pin 36
+T 5275 3950 5 8 0 1 90 6 1
+pintype=io
+}
+P 5275 100 5275 400 1 0 0
+{
+T 5225 305 5 8 1 1 90 6 1
+pinnumber=53
+T 5225 300 5 8 0 1 90 6 1
+pinseq=18
+T 5275 455 9 8 1 1 90 0 1
+pinlabel=Digital pin 37
+T 5275 450 5 8 0 1 90 0 1
+pintype=io
+}
+P 4900 4300 4900 4000 1 0 0
+{
+T 4850 4095 5 8 1 1 90 0 1
+pinnumber=50
+T 4850 4100 5 8 0 1 90 0 1
+pinseq=19
+T 4900 3945 9 8 1 1 90 6 1
+pinlabel=Digital pin 38
+T 4900 3950 5 8 0 1 90 6 1
+pintype=io
+}
+P 4900 100 4900 400 1 0 0
+{
+T 4850 305 5 8 1 1 90 6 1
+pinnumber=70
+T 4850 300 5 8 0 1 90 6 1
+pinseq=20
+T 4900 455 9 8 1 1 90 0 1
+pinlabel=Digital pin 39
+T 4900 450 5 8 0 1 90 0 1
+pintype=io
+}
+P 4525 4300 4525 4000 1 0 0
+{
+T 4475 4095 5 8 1 1 90 0 1
+pinnumber=52
+T 4475 4100 5 8 0 1 90 0 1
+pinseq=21
+T 4525 3945 9 8 1 1 90 6 1
+pinlabel=Digital pin 40
+T 4525 3950 5 8 0 1 90 6 1
+pintype=io
+}
+P 4525 100 4525 400 1 0 0
+{
+T 4475 305 5 8 1 1 90 6 1
+pinnumber=51
+T 4475 300 5 8 0 1 90 6 1
+pinseq=22
+T 4525 455 9 8 1 1 90 0 1
+pinlabel=Digital pin 41
+T 4525 450 5 8 0 1 90 0 1
+pintype=io
+}
+P 4150 4300 4150 4000 1 0 0
+{
+T 4100 4095 5 8 1 1 90 0 1
+pinnumber=42
+T 4100 4100 5 8 0 1 90 0 1
+pinseq=23
+T 4150 3945 9 8 1 1 90 6 1
+pinlabel=Digital pin 42
+T 4150 3950 5 8 0 1 90 6 1
+pintype=io
+}
+P 4150 100 4150 400 1 0 0
+{
+T 4100 305 5 8 1 1 90 6 1
+pinnumber=41
+T 4100 300 5 8 0 1 90 6 1
+pinseq=24
+T 4150 455 9 8 1 1 90 0 1
+pinlabel=Digital pin 43
+T 4150 450 5 8 0 1 90 0 1
+pintype=io
+}
+P 3775 4300 3775 4000 1 0 0
+{
+T 3725 4095 5 8 1 1 90 0 1
+pinnumber=40
+T 3725 4100 5 8 0 1 90 0 1
+pinseq=25
+T 3775 3945 9 8 1 1 90 6 1
+pinlabel=Digital pin 44 (PWM)
+T 3775 3950 5 8 0 1 90 6 1
+pintype=io
+}
+P 3775 100 3775 400 1 0 0
+{
+T 3725 305 5 8 1 1 90 6 1
+pinnumber=39
+T 3725 300 5 8 0 1 90 6 1
+pinseq=26
+T 3775 455 9 8 1 1 90 0 1
+pinlabel=Digital pin 45 (PWM)
+T 3775 450 5 8 0 1 90 0 1
+pintype=io
+}
+P 3400 4300 3400 4000 1 0 0
+{
+T 3350 4095 5 8 1 1 90 0 1
+pinnumber=38
+T 3350 4100 5 8 0 1 90 0 1
+pinseq=27
+T 3400 3945 9 8 1 1 90 6 1
+pinlabel=Digital pin 46 (PWM)
+T 3400 3950 5 8 0 1 90 6 1
+pintype=io
+}
+P 3400 100 3400 400 1 0 0
+{
+T 3350 305 5 8 1 1 90 6 1
+pinnumber=37
+T 3350 300 5 8 0 1 90 6 1
+pinseq=28
+T 3400 455 9 8 1 1 90 0 1
+pinlabel=Digital pin 47
+T 3400 450 5 8 0 1 90 0 1
+pintype=io
+}
+P 3025 4300 3025 4000 1 0 0
+{
+T 2975 4095 5 8 1 1 90 0 1
+pinnumber=36
+T 2975 4100 5 8 0 1 90 0 1
+pinseq=29
+T 3025 3945 9 8 1 1 90 6 1
+pinlabel=Digital pin 48
+T 3025 3950 5 8 0 1 90 6 1
+pintype=io
+}
+P 3025 100 3025 400 1 0 0
+{
+T 2975 305 5 8 1 1 90 6 1
+pinnumber=35
+T 2975 300 5 8 0 1 90 6 1
+pinseq=30
+T 3025 455 9 8 1 1 90 0 1
+pinlabel=Digital pin 49
+T 3025 450 5 8 0 1 90 0 1
+pintype=io
+}
+P 2650 4300 2650 4000 1 0 0
+{
+T 2600 4095 5 8 1 1 90 0 1
+pinnumber=22
+T 2600 4100 5 8 0 1 90 0 1
+pinseq=31
+T 2650 3945 9 8 1 1 90 6 1
+pinlabel=Digital pin 50 (MISO)
+T 2650 3950 5 8 0 1 90 6 1
+pintype=io
+}
+P 2650 100 2650 400 1 0 0
+{
+T 2600 305 5 8 1 1 90 6 1
+pinnumber=21
+T 2600 300 5 8 0 1 90 6 1
+pinseq=32
+T 2650 455 9 8 1 1 90 0 1
+pinlabel=Digital pin 51 (MOSI)
+T 2650 450 5 8 0 1 90 0 1
+pintype=io
+}
+P 2275 4300 2275 4000 1 0 0
+{
+T 2225 4095 5 8 1 1 90 0 1
+pinnumber=20
+T 2225 4100 5 8 0 1 90 0 1
+pinseq=33
+T 2275 3945 9 8 1 1 90 6 1
+pinlabel=Digital pin 52 (SCK)
+T 2275 3950 5 8 0 1 90 6 1
+pintype=io
+}
+P 2275 100 2275 400 1 0 0
+{
+T 2225 305 5 8 1 1 90 6 1
+pinnumber=19
+T 2225 300 5 8 0 1 90 6 1
+pinseq=34
+T 2275 455 9 8 1 1 90 0 1
+pinlabel=Digital pin 53 (SS)
+T 2275 450 5 8 0 1 90 0 1
+pintype=io
+}
+P 1000 2800 1300 2800 1 0 0
+{
+T 1205 2845 5 8 1 1 0 6 1
+pinnumber=62
+T 1200 2750 5 8 0 1 0 8 1
+pinseq=35
+T 1355 2795 9 8 1 1 0 0 1
+pinlabel=GND
+T 1350 2800 5 8 0 1 0 2 1
+pintype=pwr
+}
+P 1000 1600 1300 1600 1 0 0
+{
+T 1205 1645 5 8 1 1 0 6 1
+pinnumber=81
+T 1200 1550 5 8 0 1 0 8 1
+pinseq=36
+T 1355 1595 9 8 1 1 0 0 1
+pinlabel=GND
+T 1350 1600 5 8 0 1 0 2 1
+pintype=pwr
+}
+B 1300 400 7500 3600 3 0 0 0 -1 -1 0 -1 -1 -1 -1 -1
+T 1300 4100 8 10 1 1 0 0 1
+refdes=U?
+T 5250 2100 9 10 1 0 0 6 1
+Arduino-mega-Digital IO
+T 3950 2400 5 10 0 0 0 0 1
+device=Arduino-mega-Digital IO
+T 3950 2600 5 10 0 0 0 0 1
+author=R. Miloh Alexander
+T 3950 2800 5 10 0 0 0 0 1
+numslots=0

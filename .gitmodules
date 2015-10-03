@@ -1,0 +1,15 @@
+[submodule "githooks"]
+	path = githooks
+	url = https://github.com/BenBergman/.git_hooks
+[submodule "drone_control/lib/Adafruit_Sensor"]
+	path = drone_control/lib/Adafruit_Sensor
+	url = https://github.com/adafruit/Adafruit_Sensor
+[submodule "drone_control/lib/Adafruit_LSM303DLHC"]
+	path = drone_control/lib/Adafruit_LSM303DLHC
+	url = https://github.com/adafruit/Adafruit_LSM303DLHC
+[submodule "drone_control/lib/Adafruit_L3GD20_U"]
+	path = drone_control/lib/Adafruit_L3GD20_U
+	url = https://github.com/adafruit/Adafruit_L3GD20_U
+[submodule "drone_control/lib/Adafruit_9DOF"]
+	path = drone_control/lib/Adafruit_9DOF
+	url = https://github.com/adafruit/Adafruit_9DOF

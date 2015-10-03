@@ -1,0 +1,131 @@
+v 20140308 2
+L 300 2200 300 0 3 0 1 0 -1 -1
+P 10 2010 310 2010 1 0 0
+{
+T 1810 2060 5 10 0 0 0 0 1
+pintype=pwr
+T 365 2005 9 10 1 1 0 0 1
+pinlabel=VIN
+T 215 2055 5 10 1 1 0 6 1
+pinnumber=1
+T 910 2060 5 10 0 0 0 0 1
+pinseq=1
+}
+P 10 1810 310 1810 1 0 0
+{
+T 1810 1860 5 10 0 0 0 0 1
+pintype=pwr
+T 365 1805 9 10 1 1 0 0 1
+pinlabel=3Vo
+T 215 1855 5 10 1 1 0 6 1
+pinnumber=2
+T 910 1860 5 10 0 0 0 0 1
+pinseq=2
+}
+P 10 1610 310 1610 1 0 0
+{
+T 1810 1660 5 10 0 0 0 0 1
+pintype=pwr
+T 365 1605 9 10 1 1 0 0 1
+pinlabel=GND
+T 215 1655 5 10 1 1 0 6 1
+pinnumber=3
+T 910 1660 5 10 0 0 0 0 1
+pinseq=3
+}
+P 10 1410 310 1410 1 0 0
+{
+T 1810 1460 5 10 0 0 0 0 1
+pintype=io
+T 365 1405 9 10 1 1 0 0 1
+pinlabel=SCL
+T 215 1455 5 10 1 1 0 6 1
+pinnumber=4
+T 910 1460 5 10 0 0 0 0 1
+pinseq=4
+}
+P 10 1210 310 1210 1 0 0
+{
+T 1810 1260 5 10 0 0 0 0 1
+pintype=io
+T 365 1205 9 10 1 1 0 0 1
+pinlabel=SDA
+T 215 1255 5 10 1 1 0 6 1
+pinnumber=5
+T 910 1260 5 10 0 0 0 0 1
+pinseq=5
+}
+L 310 2210 1800 2200 3 0 1 0 -1 -1
+L 1800 2200 1800 0 3 0 1 0 -1 -1
+L 1800 0 310 10 3 0 1 0 -1 -1
+P 10 1010 310 1010 1 0 0
+{
+T 1810 1060 5 10 0 0 0 0 1
+pintype=out
+T 365 1005 9 10 1 1 0 0 1
+pinlabel=GINT
+T 215 1055 5 10 1 1 0 6 1
+pinnumber=6
+T 910 1060 5 10 0 0 0 0 1
+pinseq=6
+}
+P 10 810 310 810 1 0 0
+{
+T 1810 860 5 10 0 0 0 0 1
+pintype=out
+T 365 805 9 10 1 1 0 0 1
+pinlabel=GRDY
+T 215 855 5 10 1 1 0 6 1
+pinnumber=7
+T 910 860 5 10 0 0 0 0 1
+pinseq=7
+}
+P 10 610 310 610 1 0 0
+{
+T 1810 660 5 10 0 0 0 0 1
+pintype=out
+T 365 605 9 10 1 1 0 0 1
+pinlabel=LIN1
+T 215 655 5 10 1 1 0 6 1
+pinnumber=8
+T 910 660 5 10 0 0 0 0 1
+pinseq=8
+}
+P 10 410 310 410 1 0 0
+{
+T 1810 460 5 10 0 0 0 0 1
+pintype=out
+T 365 405 9 10 1 1 0 0 1
+pinlabel=LIN2
+T 215 455 5 10 1 1 0 6 1
+pinnumber=9
+T 910 460 5 10 0 0 0 0 1
+pinseq=9
+}
+P 10 210 310 210 1 0 0
+{
+T 1810 260 5 10 0 0 0 0 1
+pintype=out
+T 365 205 9 10 1 1 0 0 1
+pinlabel=LRDY
+T 215 255 5 10 1 1 0 6 1
+pinnumber=10
+T 910 260 5 10 0 0 0 0 1
+pinseq=10
+}
+T 310 2810 8 10 0 0 0 0 1
+device=9-DOF_IMU
+T 310 2610 8 10 0 0 0 0 1
+description=Adafruit 9-DOF IMU
+T 310 3010 8 10 0 0 0 0 1
+footprint=DIP110
+T 10 2310 8 10 1 1 0 0 1
+refdes=U?
+T 310 3210 8 10 0 0 0 0 1
+numslots=1
+T 510 2310 9 12 1 0 0 0 1
+Adafruit 9-DOF IMU
+T 310 3410 8 10 0 0 0 0 1
+slotdef=1:1,2,3,4,5,6,7,8,9,10
+T 310 3610 8 10 0 0 0 0 1
+description=https://learn.adafruit.com/adafruit-9-dof-imu-breakout/introduction

@@ -1,0 +1,93 @@
+# This is the template file for creating symbols with tragesym						
+# every line starting with '#' is a comment line.						
+# save it as text file with tab separated cells and start tragesym						
+						
+[options]						
+# wordswap swaps labels if the pin is on the right side an looks like this:						
+"#   ""PB1 (CLK)"". That's useful for micro controller port labels"						
+# rotate_labels rotates the pintext of top and bottom pins						
+#   this is useful for large symbols like FPGAs with more than 100 pins						
+# sort_labels will sort the pins by it's labels						
+#   useful for address ports, busses, ...						
+wordswap	no					
+rotate_labels	yes					
+sort_labels						
+generate_pinseq	yes					
+sym_width	7500					
+pinwidthvertical	1200					
+pinwidthhorizontal	375					
+						
+[geda_attr]						
+# name will be printed in the top of the symbol						
+# if you have a device with slots, you'll have to use slot= and slotdef=						
+# use comment= if there are special information you want to add						
+version	20060113 1					
+name	Arduino-mega-Digital IO					
+device	Arduino-mega-Digital IO					
+refdes	U?					
+footprint						
+description						
+documentation						
+author	R. Miloh Alexander					
+numslots	0					
+dist-license						
+use-license						
+#slot	1					
+#slotdef	1:					
+#slotdef	2:					
+#slotdef	3:					
+#slotdef	4:					
+#comment	great props to mega2.pdf by pighixxx.com					
+#comment	note due to possible bug in tragesym, using pinsequence below to match the arduino mega physical layout wasn't working,  so user who is generating part  must reverse the part (in gschem ctrl-a select all, press 'E' press 'I' ) the part after tragesym generation					
+#comment						
+						
+[pins]						
+# tabseparated list of pin descriptions						
+#						
+# pinnr is the physical number of the pin						
+# seq is the pinseq= attribute, leave it blank if it doesn't matter						
+# type can be (in, out, io, oc, oe, pas, tp, tri, clk, pwr)						
+# style can be (line,dot,clk,dotclk,none). none if only want to add a net						
+# posit. can be (l,r,t,b) or empty for nets						
+# net specifies the name of the net. Vcc or GND for example.						
+# label represents the pinlabel.						
+#	"negation lines can be added with ""\_"" example: \_enable\_ "					
+#	"if you want to write a ""\"" use ""\\"" as escape sequence"					
+#						
+#pinnr	seq	type	style	posit.	net	label
+61	36	pwr	line	l	5V	5V
+80	35	pwr	line	l	5V	5V
+78	34	io	line	t	Digital pin 22	Digital pin 22
+77	33	io	line	b	Digital pin 23	Digital pin 23
+76	32	io	line	t	Digital pin 24	Digital pin 24
+75	31	io	line	b	Digital pin 25	Digital pin 25
+74	30	io	line	t	Digital pin 26	Digital pin 26
+73	29	io	line	b	Digital pin 27	Digital pin 27
+72	28	io	line	t	Digital pin 28	Digital pin 28
+71	27	io	line	b	Digital pin 29	Digital pin 29
+60	26	io	line	t	Digital pin 30	Digital pin 30
+59	25	io	line	b	Digital pin 31	Digital pin 31
+58	24	io	line	t	Digital pin 32	Digital pin 32
+57	23	io	line	b	Digital pin 33	Digital pin 33
+56	22	io	line	t	Digital pin 34	Digital pin 34
+55	21	io	line	b	Digital pin 35	Digital pin 35
+54	20	io	line	t	Digital pin 36	Digital pin 36
+53	19	io	line	b	Digital pin 37	Digital pin 37
+50	18	io	line	t	Digital pin 38	Digital pin 38
+70	17	io	line	b	Digital pin 39	Digital pin 39
+52	16	io	line	t	Digital pin 40	Digital pin 40
+51	15	io	line	b	Digital pin 41	Digital pin 41
+42	14	io	line	t	Digital pin 42	Digital pin 42
+41	13	io	line	b	Digital pin 43	Digital pin 43
+40	12	io	line	t	Digital pin 44 (PWM)	Digital pin 44 (PWM)
+39	11	io	line	b	Digital pin 45 (PWM)	Digital pin 45 (PWM)
+38	10	io	line	t	Digital pin 46 (PWM)	Digital pin 46 (PWM)
+37	9	io	line	b	Digital pin 47	Digital pin 47
+36	8	io	line	t	Digital pin 48	Digital pin 48
+35	7	io	line	b	Digital pin 49	Digital pin 49
+22	6	io	line	t	Digital pin 50 (MISO)	Digital pin 50 (MISO)
+21	5	io	line	b	Digital pin 51 (MOSI)	Digital pin 51 (MOSI)
+20	4	io	line	t	Digital pin 52 (SCK)	Digital pin 52 (SCK)
+19	3	io	line	b	Digital pin 53 (SS)	Digital pin 53 (SS)
+62	2	pwr	line	r	GND	GND
+81	1	pwr	line	r	GND	GND

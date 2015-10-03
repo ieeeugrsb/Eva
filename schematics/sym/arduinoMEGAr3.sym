@@ -1,0 +1,16 @@
+v 20111231 2
+C 40500 41500 1 0 0 arduino-mega-analog-in.sym
+C 34300 47800 1 0 0 arduino-mega-communication.sym
+C 52300 45500 1 0 0 arduino-mega-digital.sym
+C 62300 45500 1 0 0 arduino-mega-pwm.sym
+{
+T 56700 49100 5 10 1 1 0 3 1
+resdef=U?
+}
+C 40500 49200 1 0 0 arduino-mega-power.sym
+{
+T 39000 52200 5 10 0 0 0 0 1
+footprint=arduino-mega
+T 36800 50600 5 10 1 1 0 3 1
+resdef=U?
+}
