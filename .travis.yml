@@ -27,8 +27,12 @@ install:
   - cd Arturo && env python2 setup.py install --prefix=$TRAVIS_BUILD_DIR/tools-env && cd ..
 
 script:
-# Compile Arduino sketches
-  - cd drone_control      && ano build --arduino-dist $ARDUINO_PATH && cd ..
-  - cd tests/check_motors && ano build --arduino-dist $ARDUINO_PATH && cd ..
-  - cd tests/serial2motor && ano build --arduino-dist $ARDUINO_PATH && cd ..
-  - cd tests/show_imu     && ano build --arduino-dist $ARDUINO_PATH && cd ..
+# Compile Arduino sketch for dron control
+  - cd drone_control && ano build -m mega -d $ARDUINO_PATH && cd ..
+
+# Compile Arduino sketches for tests
+  - cd tests
+  - cd check_motors && ano build -m mega -d $ARDUINO_PATH && cd ..
+  - cd serial2motor && ano build -m mega -d $ARDUINO_PATH && cd ..
+  - cd show_imu     && ano build -m mega -d $ARDUINO_PATH && cd ..
+  - cd ..
