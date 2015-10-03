@@ -6,7 +6,7 @@ Eva
 
 Source code repository of Eva project.
 
-Eva is an Unmanned Aerial Vehicule capable of locating a known object on a controlled environment. Object location information is sent to [Wall-E](https://github.com/ieeeugrsb/Wall-E) autonomous robotic arm.
+**Eva** is an *Unmanned Aerial Vehicule* capable of locating a known object on a controlled environment. Object location information is sent to [Wall-E](https://github.com/ieeeugrsb/Wall-E) autonomous robotic arm.
 
 Project is composed by four teams:
 
@@ -22,7 +22,10 @@ In order to compile and upload the skeches for Arduino will be need:
 * [**Arturo**](https://github.com/scottdarch/Arturo/). Fork of *ino*, it's a command-line program for compiling and uploading code to Arduino.
 
 Then go the program folder (ie: *drone_control*) and run
-```
+``` bash
+# For the first time you will need to download the dependencies too with:
+git submodule update --init --recursive
+
 ano build   # It will compile everything in 'src' dir.
 ano upload  # It will upload the code to the Arduino board.
 ```
@@ -34,7 +37,7 @@ The recommended text editor to continue with Arduino development is [Atom](https
 ## Schematic Setup
 To work with the drone schematic you will need the latest version of the gEDA suite. You can follow these steps to compile on UNIX systems:
 
-```
+``` bash
 mkdir geda && cd geda
 
 git clone git://git.geda-project.org/geda-gaf.git
@@ -59,4 +62,3 @@ Then create or edit the file *~/.gEDA/gafrc* to add the new symbols:
 
 ## External resources
 * [Arduino gEDA Schematic Design](https://github.com/miloh/arduino-templates-gaf) by miloh.
-* [Git hooks for gEDA](https://github.com/BenBergman/.git_hooks) by Benjamin Bergman.
