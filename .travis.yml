@@ -16,7 +16,7 @@ before_install:
 install:
 # Install Arturo -- Commad-line compiler for Arduino
   - git clone https://github.com/scottdarch/Arturo
-  - mkdir tools-env/
+  - mkdir -p $TRAVIS_BUILD_DIR/tools-env/lib/python2.7/site-packages/
   - export PYTHONPATH=$TRAVIS_BUILD_DIR/tools-env/lib/python2.7/site-packages/
   - export PATH=$TRAVIS_BUILD_DIR/tools-env/bin:$PATH
   - cd Arturo && env python2 setup.py install --prefix=$TRAVIS_BUILD_DIR/tools-env && cd ..
