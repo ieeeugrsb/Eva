@@ -1,0 +1,29 @@
+## Travis CI Integration
+language: c
+
+# Use the new Travis CI infrastructure
+sudo: false
+
+# Handle git submodules yourself
+git:
+    submodules: false
+
+# Use sed to replace the SSH URL with the public URL, then initialize submodules
+before_install:
+  - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+  - git submodule update --init --recursive
+
+install:
+# Install Arturo -- Commad-line compiler for Arduino
+  - git clone https://github.com/scottdarch/Arturo
+  - mkdir tools-env/
+  - export PYTHONPATH=tools-env/lib/python2.7/site-packages/
+  - export PATH=tools-env/bin:$PATH
+  - cd Arturo && env python2 setup.py install --prefix=../tools-env && cd ..
+
+script:
+# Compile Arduino sketches
+  - cd drone_control      && ano build && cd ..
+  - cd tests/check_motors && ano build && cd ..
+  - cd tests/serial2motor && ano build && cd ..
+  - cd tests/show_imu     && ano build && cd ..
