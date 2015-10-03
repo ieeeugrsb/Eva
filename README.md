@@ -1,10 +1,15 @@
-Eva
-===
-[![Join the chat at https://gitter.im/ieeeugrsb/Eva](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ieeeugrsb/Eva?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# Eva [<img alt="Join the chat at https://gitter.im/ieeeugrsb/Eva" src="https://badges.gitter.im/Join%20Chat.svg" align="right" />](https://gitter.im/ieeeugrsb/Eva?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-![Wall-E and Eva logo](http://ieee-ugr.org/wp-content/uploads/2014/03/logo-WandE-e1431951239314.png)
+<p align="center">
+<a href="http://www.gnu.org/copyleft/gpl.html"><img alt="license" src="https://img.shields.io/badge/license-GPL%20V3-blue.svg?style=flat"  align="left"/></a>
+<a href="https://github.com/fehmicansaglam/progressed.io"><img alt="20% done" src="http://progressed.io/bar/20" align="right" /></a>
+</p>
 
-Source code repository of Eva project.
+<br>
+<p align="center"><b>Source code repository of Eva project.</b></p>
+<p align="center">
+  <img alt="Wall-E and Eva logo" src="http://ieee-ugr.org/wp-content/uploads/2014/03/logo-WandE-e1431951239314.png" />
+</p>
 
 **Eva** is an *Unmanned Aerial Vehicule* capable of locating a known object on a controlled environment. Object location information is sent to [Wall-E](https://github.com/ieeeugrsb/Wall-E) autonomous robotic arm.
 
