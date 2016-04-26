@@ -32,7 +32,7 @@ Then go the program folder (ie: *drone_control*) and run
 # For the first time you will need to download the dependencies too with:
 git submodule update --init --recursive
 
-ano build   # It will compile everything in 'src' dir.
+ano build --cpu atmega2560  # It will compile everything in 'src' dir.
 ano upload  # It will upload the code to the Arduino board.
 ```
 

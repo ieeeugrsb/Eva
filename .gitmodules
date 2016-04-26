@@ -13,3 +13,6 @@
 [submodule "drone_control/lib/Adafruit_9DOF"]
 	path = drone_control/lib/Adafruit_9DOF
 	url = https://github.com/adafruit/Adafruit_9DOF
+[submodule "drone_control/lib/Arduino-PID-Library"]
+	path = drone_control/lib/Arduino-PID-Library
+	url = https://github.com/br3ttb/Arduino-PID-Library.git
