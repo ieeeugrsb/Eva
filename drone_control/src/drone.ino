@@ -19,6 +19,8 @@
 #include <Adafruit_L3GD20_U.h>
 #include <Adafruit_9DOF.h>
 
+#include <PID_v1.h>
+
 #include "Motor.h"
 
 // Assign a unique ID to the sensors.
