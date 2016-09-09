@@ -39,14 +39,15 @@ Motor motor_3(10);
 Motor motor_4( 9);
 
 double thrust;
-double roll_s, roll, roll_u;
-double pitch_s, pitch, pitch_u;
-double yaw_s, yaw, yaw_u;
+double roll_s = 0, roll, roll_u;
+double pitch_s = 0, pitch, pitch_u;
+double yaw_s = 0, yaw, yaw_u;
+int motor1_u, motor2_u, motor3_u, motor4_u;
 
 //Define tuning parameters
-double roll_Kp=1, roll_Ki=0.05, roll_Kd=0.25;
-double pitch_Kp=1, pitch_Ki=0.05, pitch_Kd=0.25;
-double yaw_Kp=1, yaw_Ki=0.05, yaw_Kd=0.25;
+double roll_Kp=1, roll_Ki=0.05, roll_Kd=0.0;
+double pitch_Kp=1, pitch_Ki=0.05, pitch_Kd=0.0;
+double yaw_Kp=1, yaw_Ki=0.05, yaw_Kd=0.0;
 
 // Output limits
 const double roll_min=-75, roll_max=75;
@@ -182,7 +183,6 @@ void loop()
     Serial.print(yaw);
     Serial.print("; ");
     Serial.println("");
-    delay(100);
 
     // Compute control inputs
     roll_pid.Compute();
@@ -190,10 +190,42 @@ void loop()
     yaw_pid.Compute();
 
     // Apply inputs
-    motor_1.write(thrust + roll_u - yaw_u);
-    motor_2.write(thrust - pitch_u + yaw_u);
-    motor_3.write(thrust - roll_u - yaw_u);
-    motor_4.write(thrust + pitch_u + yaw_u);
+    motor1_u = thrust + roll_u - yaw_u;
+    motor2_u = thrust - pitch_u + yaw_u;
+    motor3_u = thrust - roll_u - yaw_u;
+    motor4_u = thrust + pitch_u + yaw_u;
+
+    Serial.print("roll: ");
+    Serial.print(roll_u);
+    Serial.print("; ");
+    Serial.print("pitch: ");
+    Serial.print(pitch_u);
+    Serial.print("; ");
+    Serial.print("yaw: ");
+    Serial.print(yaw_u);
+    Serial.print("; ");
+    Serial.println("");
+    
+    Serial.print("m1: ");
+    Serial.print(motor1_u);
+    Serial.print("; ");
+    Serial.print("m2: ");
+    Serial.print(motor2_u);
+    Serial.print("; ");
+    Serial.print("m3: ");
+    Serial.print(motor3_u);
+    Serial.print("; ");
+    Serial.print("m4: ");
+    Serial.print(motor4_u);
+    Serial.print("; ");
+    Serial.println("");
+    
+    delay(1000);
+    
+    motor_1.write(motor1_u);
+    motor_2.write(motor2_u);
+    motor_3.write(motor3_u);
+    motor_4.write(motor4_u);
 
     // PID library decides itself when its time to update
     // its output according to sample time
