@@ -33,7 +33,7 @@ Then go the program folder (ie: *drone_control*) and run
 git submodule update --init --recursive
 
 ano build --cpu atmega2560  # It will compile everything in 'src' dir.
-ano upload  # It will upload the code to the Arduino board.
+ano upload --cpu atmega2560  # It will upload the code to the Arduino board.
 ```
 
 To interact with the Arduino program via serial port use the script *open_serial.sh* and pass as first and only argument the number of the port where Arduino is, ie: `./open_serial.sh 0` for */dev/ttyACM0* (default one).
