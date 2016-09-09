@@ -157,7 +157,6 @@ void readSensor()
     
     // Calculate pitch and roll from the raw accelerometer data.
     accel.getEvent(&accel_event);
-    mag.getEvent(&mag_event);
     if (dof.accelGetOrientation(&accel_event, &orientation) &&
         dof.magGetOrientation(SENSOR_AXIS_Z, &mag_event, &orientation))
     {
@@ -171,18 +170,6 @@ void loop()
 {
     // Measure states
     readSensor();
-
-    Serial.print("Roll: ");
-    Serial.print(roll);
-    Serial.print("; ");
-    Serial.print("Pitch: ");
-    Serial.print(pitch);
-    Serial.print("; ");
-    Serial.print("Heading: ");
-    Serial.print(yaw);
-    Serial.print("; ");
-    Serial.println("");
-    delay(100);
 
     // Compute control inputs
     roll_pid.Compute();
