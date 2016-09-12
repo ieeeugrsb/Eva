@@ -18,7 +18,7 @@
 #include "Arduino.h"
 
 const int MOTOR_ZERO = 140;
-const int MOTOR_MAX  = 255;
+const int MOTOR_MAX  = 200; // 255 enters configuration mode
 
 class Motor
 {

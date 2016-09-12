@@ -155,7 +155,7 @@ void readSensor()
     sensors_event_t accel_event;
     sensors_event_t mag_event;
     sensors_vec_t   orientation;
-    
+
     // Calculate pitch and roll from the raw accelerometer data.
     accel.getEvent(&accel_event);
     mag.getEvent(&mag_event);
@@ -190,10 +190,10 @@ void loop()
     yaw_pid.Compute();
 
     // Apply inputs
-    motor1_u = thrust + roll_u - yaw_u;
-    motor2_u = thrust - pitch_u + yaw_u;
-    motor3_u = thrust - roll_u - yaw_u;
-    motor4_u = thrust + pitch_u + yaw_u;
+    motor1_u = thrust + roll_u; // - yaw_u;
+    motor2_u = thrust - pitch_u; // + yaw_u;
+    motor3_u = thrust - roll_u; // - yaw_u;
+    motor4_u = thrust + pitch_u; // + yaw_u;
 
     Serial.print("roll: ");
     Serial.print(roll_u);
@@ -205,7 +205,7 @@ void loop()
     Serial.print(yaw_u);
     Serial.print("; ");
     Serial.println("");
-    
+
     Serial.print("m1: ");
     Serial.print(motor1_u);
     Serial.print("; ");
@@ -219,9 +219,9 @@ void loop()
     Serial.print(motor4_u);
     Serial.print("; ");
     Serial.println("");
-    
+
     delay(1000);
-    
+
     motor_1.write(motor1_u);
     motor_2.write(motor2_u);
     motor_3.write(motor3_u);

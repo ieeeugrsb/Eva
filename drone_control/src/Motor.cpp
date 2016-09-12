@@ -33,8 +33,14 @@ void Motor::stop()
 void Motor::write(int value)
 {
     int final_value = MOTOR_ZERO + value;
-    if (final_value < MOTOR_ZERO || final_value > MOTOR_MAX)
+    if (final_value < MOTOR_ZERO)
+    {
         return;
+    }
+    else if (final_value > MOTOR_MAX)
+    {
+        final_value = MOTOR_MAX;
+    }
 
     analogWrite(this->pin, final_value);
 }
