@@ -36,18 +36,18 @@ float seaLevelPressure = SENSORS_PRESSURE_SEALEVELHPA;
 Motor motor_1(12);
 Motor motor_2(11);
 Motor motor_3(10);
-Motor motor_4( 9);
+Motor motor_4(9);
 
-double thrust;
+double thrust = 140;
 double roll_s = 0, roll, roll_u;
 double pitch_s = 0, pitch, pitch_u;
 double yaw_s = 0, yaw, yaw_u;
 int motor1_u, motor2_u, motor3_u, motor4_u;
 
 //Define tuning parameters
-double roll_Kp=1, roll_Ki=0.05, roll_Kd=0.0;
-double pitch_Kp=1, pitch_Ki=0.05, pitch_Kd=0.0;
-double yaw_Kp=1, yaw_Ki=0.05, yaw_Kd=0.0;
+double roll_Kp=5, roll_Ki=0.05, roll_Kd=0.0;
+double pitch_Kp=5, pitch_Ki=0.05, pitch_Kd=0.0;
+double yaw_Kp=5, yaw_Ki=0.05, yaw_Kd=0.0;
 
 // Output limits
 const double roll_min=-75, roll_max=75;
@@ -163,8 +163,8 @@ void readSensor()
         dof.magGetOrientation(SENSOR_AXIS_Z, &mag_event, &orientation))
     {
         roll = orientation.roll;
-        pitch = orientation.pitch;
-        yaw = orientation.heading;
+        pitch = 180 + orientation.pitch;
+        yaw = -orientation.heading;
     }
 }
 
@@ -186,8 +186,8 @@ void loop()
 
     // Compute control inputs
     roll_pid.Compute();
-    pitch_pid.Compute();
-    yaw_pid.Compute();
+    //pitch_pid.Compute();
+    //yaw_pid.Compute();
 
     // Apply inputs
     motor1_u = thrust + roll_u; // - yaw_u;
@@ -198,13 +198,19 @@ void loop()
     Serial.print("roll: ");
     Serial.print(roll_u);
     Serial.print("; ");
-    Serial.print("pitch: ");
-    Serial.print(pitch_u);
-    Serial.print("; ");
-    Serial.print("yaw: ");
-    Serial.print(yaw_u);
-    Serial.print("; ");
+    // Serial.print("pitch: ");
+    // Serial.print(pitch_u);
+    // Serial.print("; ");
+    // Serial.print("yaw: ");
+    // Serial.print(yaw_u);
+    // Serial.print("; ");
     Serial.println("");
+
+    motor1_u = 100;
+    motor2_u = 100;
+    motor3_u = 0;
+    motor4_u = 0;
+
 
     Serial.print("m1: ");
     Serial.print(motor1_u);
