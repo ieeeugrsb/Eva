@@ -28,9 +28,6 @@ Adafruit_9DOF                 dof   = Adafruit_9DOF();
 Adafruit_LSM303_Accel_Unified accel = Adafruit_LSM303_Accel_Unified(30301);
 Adafruit_LSM303_Mag_Unified   mag   = Adafruit_LSM303_Mag_Unified(30302);
 
-// Update this with the correct SLP for accurate altitude measurements
-float seaLevelPressure = SENSORS_PRESSURE_SEALEVELHPA;
-
 // Create motors instance and start in Working-Mode.
 // See wiki to check motor positions
 Motor motor_1(12);
@@ -58,10 +55,15 @@ const double yaw_min=-75, yaw_max=75;
 PID roll_pid(&roll, &roll_u, &roll_s, roll_Kp, roll_Ki, roll_Kd, DIRECT);
 PID pitch_pid(&pitch, &pitch_u, &pitch_s, pitch_Kp, pitch_Ki, pitch_Kd, DIRECT);
 PID yaw_pid(&yaw, &yaw_u, &yaw_s, yaw_Kp, yaw_Ki, yaw_Kd, DIRECT);
-const int sample_time = 10;  // in ms
+const int main_sample_time = 10;  // in ms
 
-int value = 0;
-int incremento = 5;
+//Main freq counter
+unsigned long main_freq_last = 0;
+
+//Print freq counter
+const int print_sample_time = 1000;  // in ms
+unsigned long print_freq_last = 0;
+
 
 void initSensors()
 {
@@ -88,66 +90,17 @@ void setup()
 
     // Init PID controllers
     roll_pid.SetMode(AUTOMATIC);
-    roll_pid.SetSampleTime(sample_time);
+    roll_pid.SetSampleTime(main_sample_time);
     roll_pid.SetOutputLimits(roll_min, roll_max);
     pitch_pid.SetMode(AUTOMATIC);
-    pitch_pid.SetSampleTime(sample_time);
+    pitch_pid.SetSampleTime(main_sample_time);
     pitch_pid.SetOutputLimits(pitch_min, pitch_max);
     yaw_pid.SetMode(AUTOMATIC);
-    yaw_pid.SetSampleTime(sample_time);
+    yaw_pid.SetSampleTime(main_sample_time);
     yaw_pid.SetOutputLimits(yaw_min, yaw_max);
 
     // Wait for motors going to working mode.
     delay(2000);
-}
-
-void write2motors(int value)
-{
-    Serial.print("Writing "); Serial.println(value);
-    motor_1.write(value + 14);
-    motor_2.write(value + 15);
-    motor_3.write(value);
-    motor_4.write(value);
-}
-
-void moveMotors()
-{
-    if (value > 25 || value < 0)
-        incremento *= -1;
-
-    value += incremento;
-    write2motors(value);
-}
-
-void showSensorData()
-{
-    sensors_event_t accel_event;
-    sensors_event_t mag_event;
-    sensors_vec_t   orientation;
-
-    // Calculate pitch and roll from the raw accelerometer data.
-    accel.getEvent(&accel_event);
-    if (dof.accelGetOrientation(&accel_event, &orientation)) {
-      // 'orientation' should have valid .roll and .pitch fields
-      Serial.print("Roll: ");
-      Serial.print(orientation.roll);
-      Serial.print("; ");
-      Serial.print("Pitch: ");
-      Serial.print(orientation.pitch);
-      Serial.print("; ");
-    }
-
-    // Calculate the heading using the magnetometer
-    mag.getEvent(&mag_event);
-    if (dof.magGetOrientation(SENSOR_AXIS_Z, &mag_event, &orientation)) {
-      // 'orientation' should have valid .heading data now
-      Serial.print("Heading: ");
-      Serial.print(orientation.heading);
-      Serial.print("; ");
-    }
-
-    Serial.println("");
-    delay(1000);
 }
 
 void readSensor()
@@ -163,7 +116,9 @@ void readSensor()
         dof.magGetOrientation(SENSOR_AXIS_Z, &mag_event, &orientation))
     {
         roll = orientation.roll;
-        pitch = 180 + orientation.pitch;
+        pitch = orientation.pitch;
+        if (pitch >= 0) pitch = 180 - pitch;
+        if (pitch < 0) pitch = -180 - pitch;
         yaw = -orientation.heading;
     }
 }
@@ -173,6 +128,32 @@ void loop()
     // Measure states
     readSensor();
 
+    // Print sensor data
+    showSensorData();
+
+    // Compute control inputs
+    // PID library decides itself when its time to update
+    // its output according to sample time
+    roll_pid.Compute();
+    pitch_pid.Compute();
+    //yaw_pid.Compute();
+
+    // Apply inputs
+    motor1_u = thrust + roll_u; // - yaw_u;
+    motor2_u = thrust - pitch_u; // + yaw_u;
+    motor3_u = thrust - roll_u; // - yaw_u;
+    motor4_u = thrust + pitch_u; // + yaw_u;
+
+    showControlInputs();
+
+    motor_1.write(motor1_u);
+    motor_2.write(motor2_u);
+    motor_3.write(motor3_u);
+    motor_4.write(motor4_u);
+}
+
+void showSensorData()
+{
     Serial.print("Roll: ");
     Serial.print(roll);
     Serial.print("; ");
@@ -183,34 +164,20 @@ void loop()
     Serial.print(yaw);
     Serial.print("; ");
     Serial.println("");
+}
 
-    // Compute control inputs
-    roll_pid.Compute();
-    //pitch_pid.Compute();
-    //yaw_pid.Compute();
-
-    // Apply inputs
-    motor1_u = thrust + roll_u; // - yaw_u;
-    motor2_u = thrust - pitch_u; // + yaw_u;
-    motor3_u = thrust - roll_u; // - yaw_u;
-    motor4_u = thrust + pitch_u; // + yaw_u;
-
-    Serial.print("roll: ");
+void showControlInputs()
+{
+    Serial.print("roll_u: ");
     Serial.print(roll_u);
     Serial.print("; ");
-    // Serial.print("pitch: ");
-    // Serial.print(pitch_u);
-    // Serial.print("; ");
-    // Serial.print("yaw: ");
-    // Serial.print(yaw_u);
-    // Serial.print("; ");
+    Serial.print("pitch_u: ");
+    Serial.print(pitch_u);
+    Serial.print("; ");
+    Serial.print("yaw_u: ");
+    Serial.print(yaw_u);
+    Serial.print("; ");
     Serial.println("");
-
-    motor1_u = 100;
-    motor2_u = 100;
-    motor3_u = 0;
-    motor4_u = 0;
-
 
     Serial.print("m1: ");
     Serial.print(motor1_u);
@@ -225,14 +192,4 @@ void loop()
     Serial.print(motor4_u);
     Serial.print("; ");
     Serial.println("");
-
-    delay(1000);
-
-    motor_1.write(motor1_u);
-    motor_2.write(motor2_u);
-    motor_3.write(motor3_u);
-    motor_4.write(motor4_u);
-
-    // PID library decides itself when its time to update
-    // its output according to sample time
 }
