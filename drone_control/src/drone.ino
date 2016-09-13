@@ -13,6 +13,8 @@
   along with this file.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <math.h>
+
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_LSM303_U.h>
@@ -114,7 +116,7 @@ void setup()
 
 void activateStep()
 {
-    next_step = true
+    next_step = true;
 }
 
 void readSensor()
@@ -142,12 +144,12 @@ void loop()
     if (next_step == true)
     {
         next_step = false;
-        attitudeControlLoop()
+        attitudeControlLoop();
 
         if (print_freq_count >= print_sample_time / main_sample_time)
         {
-            showSensorData()
-            showControlInputs()
+            showSensorData();
+            showControlInputs();
             print_freq_count = 0;
         }
         else
