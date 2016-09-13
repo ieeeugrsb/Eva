@@ -21,6 +21,8 @@
 
 #include <PID_v1.h>
 
+#include <FlexiTimer2.h>
+
 #include "Motor.h"
 
 // Assign a unique ID to the sensors.
@@ -55,14 +57,14 @@ const double yaw_min=-75, yaw_max=75;
 PID roll_pid(&roll, &roll_u, &roll_s, roll_Kp, roll_Ki, roll_Kd, DIRECT);
 PID pitch_pid(&pitch, &pitch_u, &pitch_s, pitch_Kp, pitch_Ki, pitch_Kd, DIRECT);
 PID yaw_pid(&yaw, &yaw_u, &yaw_s, yaw_Kp, yaw_Ki, yaw_Kd, DIRECT);
-const int main_sample_time = 10;  // in ms
-
-//Main freq counter
-unsigned long main_freq_last = 0;
+const unsigned int main_sample_time = 10;  // in ms
 
 //Print freq counter
 const int print_sample_time = 1000;  // in ms
-unsigned long print_freq_last = 0;
+unsigned long print_freq_count= 0;
+
+//loop control
+bool next_step = true;
 
 
 void initSensors()
@@ -85,6 +87,9 @@ void setup()
     // Setup PC communication.
     Serial.begin(9600);
 
+    // Set internal timer
+    FlexiTimer2::set(main_sample_time, activateStep);
+
     // Init sensors
     initSensors();
 
@@ -101,6 +106,15 @@ void setup()
 
     // Wait for motors going to working mode.
     delay(2000);
+
+    // Start timer
+    FlexiTimer2::start();
+
+}
+
+void activateStep()
+{
+    next_step = true
 }
 
 void readSensor()
@@ -124,6 +138,26 @@ void readSensor()
 }
 
 void loop()
+{
+    if (next_step == true)
+    {
+        next_step = false;
+        attitudeControlLoop()
+
+        if (print_freq_count >= print_sample_time / main_sample_time)
+        {
+            showSensorData()
+            showControlInputs()
+            print_freq_count = 0;
+        }
+        else
+        {
+            ++print_freq_count;
+        }
+    }
+}
+
+void attitudeControlLoop()
 {
     // Measure states
     readSensor();
