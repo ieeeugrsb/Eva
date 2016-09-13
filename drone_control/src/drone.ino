@@ -39,6 +39,23 @@ Motor motor_2(11);
 Motor motor_3(10);
 Motor motor_4(9);
 
+//If SensorFilter is defined, imu sensor will filter noise
+#define SENSOR_FILTER_ENABLED
+float rollx[]={
+  0,0};
+float pitchx[]={
+  0,0};
+float yawx[]={
+  0,0};
+float rolly[]={
+  0,0};
+float pitchy[]={
+  0,0};
+float yawy[]={
+  0,0};
+#define FILTER_A 0.2696 //F(z)=a/z-b
+#define FILTER_B 0.7304
+
 double thrust = 140;
 double roll_s = 0, roll, roll_u;
 double pitch_s = 0, pitch, pitch_u;
@@ -111,7 +128,6 @@ void setup()
 
     // Start timer
     FlexiTimer2::start();
-
 }
 
 void activateStep()
@@ -131,12 +147,32 @@ void readSensor()
     if (dof.accelGetOrientation(&accel_event, &orientation) &&
         dof.magGetOrientation(SENSOR_AXIS_Z, &mag_event, &orientation))
     {
-        roll = orientation.roll;
-        pitch = orientation.pitch;
-        if (pitch >= 0) pitch = 180 - pitch;
-        if (pitch < 0) pitch = -180 - pitch;
-        yaw = -orientation.heading;
+        roll = orientation.roll * M_PI / 180;
+        pitch = orientation.pitch * M_PI / 180;
+        if (pitch >= 0) pitch = M_PI - pitch;
+        if (pitch < 0) pitch = M_PI - pitch;
+        yaw = -orientation.heading * M_PI / 180;
     }
+
+    #ifdef SENSOR_FILTER_ENABLED
+    rollx[1]=rollx[0];
+    rollx[0]=roll;
+    rolly[1]=rolly[0];
+    rolly[0]=FILTER_B*rolly[1]+FILTER_A*rollx[1];
+    roll=rolly[0];
+
+    pitchx[1]=pitchx[0];
+    pitchx[0]=pitch;
+    pitchy[1]=pitchy[0];
+    pitchy[0]=FILTER_B*pitchy[1]+FILTER_A*pitchx[1];
+    pitch=pitchy[0];
+
+    yawx[1]=yawx[0];
+    yawx[0]=yaw;
+    yawy[1]=yawy[0];
+    yawy[0]=FILTER_B*yawy[1]+FILTER_A*yawx[1];
+    yaw=yawy[0];
+    #endif
 }
 
 void loop()
