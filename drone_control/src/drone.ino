@@ -25,12 +25,20 @@
 
 #include <FlexiTimer2.h>
 
+#include "Common.h"
 #include "Motor.h"
+#include "IMUComplementaryFilter.h"
 
 // Assign a unique ID to the sensors.
 Adafruit_9DOF                 dof   = Adafruit_9DOF();
 Adafruit_LSM303_Accel_Unified accel = Adafruit_LSM303_Accel_Unified(30301);
 Adafruit_LSM303_Mag_Unified   mag   = Adafruit_LSM303_Mag_Unified(30302);
+
+// Orientation angle filters
+IMUComplementaryFilter roll_filter = IMUComplementaryFilter(0.01, 0.001,
+    SENSOR_SAMPLE_TIME);
+IMUComplementaryFilter pitch_filter = IMUComplementaryFilter(0.01, 0.001,
+    SENSOR_SAMPLE_TIME);
 
 // Create motors instance and start in Working-Mode.
 // See wiki to check motor positions
@@ -38,23 +46,6 @@ Motor motor_1(12);
 Motor motor_2(11);
 Motor motor_3(10);
 Motor motor_4(9);
-
-//If SensorFilter is defined, imu sensor will filter noise
-#define SENSOR_FILTER_ENABLED
-float rollx[]={
-  0,0};
-float pitchx[]={
-  0,0};
-float yawx[]={
-  0,0};
-float rolly[]={
-  0,0};
-float pitchy[]={
-  0,0};
-float yawy[]={
-  0,0};
-#define FILTER_A 0.2696 //F(z)=a/z-b
-#define FILTER_B 0.7304
 
 double thrust = 140;
 double roll_s = 0, roll, roll_u;
@@ -88,17 +79,21 @@ bool next_step = true;
 
 void initSensors()
 {
-  if(!accel.begin()) {
-    // There was a problem detecting the LSM303 ... check your connections
-    Serial.println(F("Ooops, no LSM303 detected ... Check your wiring!"));
-    while(1);
-  }
+    if(!accel.begin()) {
+        #ifdef DEBUG
+        // There was a problem detecting the LSM303 ... check your connections
+        Serial.println("Ooops, no LSM303 detected ... Check your wiring!");
+        #endif
+        while(1);
+    }
 
-  if(!mag.begin()) {
-    // There was a problem detecting the LSM303 ... check your connections
-    Serial.println("Ooops, no LSM303 detected ... Check your wiring!");
-    while(1);
-  }
+    if(!mag.begin()) {
+        #ifdef DEBUG
+        // There was a problem detecting the LSM303 ... check your connections
+        Serial.println("Ooops, no LSM303 detected ... Check your wiring!");
+        #endif
+        while(1);
+    }
 }
 
 void setup()
@@ -153,26 +148,6 @@ void readSensor()
         if (pitch < 0) pitch = M_PI - pitch;
         yaw = -orientation.heading * M_PI / 180;
     }
-
-    #ifdef SENSOR_FILTER_ENABLED
-    rollx[1]=rollx[0];
-    rollx[0]=roll;
-    rolly[1]=rolly[0];
-    rolly[0]=FILTER_B*rolly[1]+FILTER_A*rollx[1];
-    roll=rolly[0];
-
-    pitchx[1]=pitchx[0];
-    pitchx[0]=pitch;
-    pitchy[1]=pitchy[0];
-    pitchy[0]=FILTER_B*pitchy[1]+FILTER_A*pitchx[1];
-    pitch=pitchy[0];
-
-    yawx[1]=yawx[0];
-    yawx[0]=yaw;
-    yawy[1]=yawy[0];
-    yawy[0]=FILTER_B*yawy[1]+FILTER_A*yawx[1];
-    yaw=yawy[0];
-    #endif
 }
 
 void loop()
@@ -200,8 +175,10 @@ void attitudeControlLoop()
     // Measure states
     readSensor();
 
+    #ifdef DEBUG
     // Print sensor data
     showSensorData();
+    #endif
 
     // Compute control inputs
     // PID library decides itself when its time to update
@@ -216,7 +193,9 @@ void attitudeControlLoop()
     motor3_u = thrust - roll_u; // - yaw_u;
     motor4_u = thrust + pitch_u; // + yaw_u;
 
+    #ifdef DEBUG
     showControlInputs();
+    #endif
 
     motor_1.write(motor1_u);
     motor_2.write(motor2_u);
