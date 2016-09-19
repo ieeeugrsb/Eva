@@ -33,12 +33,13 @@
 Adafruit_9DOF                 dof   = Adafruit_9DOF();
 Adafruit_LSM303_Accel_Unified accel = Adafruit_LSM303_Accel_Unified(30301);
 Adafruit_LSM303_Mag_Unified   mag   = Adafruit_LSM303_Mag_Unified(30302);
+Adafruit_L3GD20_Unified       gyro  = Adafruit_L3GD20_Unified(30303);
 
 // Orientation angle filters
 IMUComplementaryFilter roll_filter = IMUComplementaryFilter(0.04, 0.00001,
-    SENSOR_SAMPLE_TIME);
+    ATTITUDE_LOOP_PERIOD);
 IMUComplementaryFilter pitch_filter = IMUComplementaryFilter(0.04, 0.00001,
-    SENSOR_SAMPLE_TIME);
+    ATTITUDE_LOOP_PERIOD);
 
 // Create motors instance and start in Working-Mode.
 // See wiki to check motor positions
@@ -94,6 +95,14 @@ void initSensors()
         #endif
         while(1);
     }
+
+    if(!gyro.begin()) {
+        #ifdef DEBUG
+        // There was a problem detecting the LSM303 ... check your connections
+        Serial.println("Ooops, no L3GD20 detected ... Check your wiring!");
+        #endif
+        while(1);
+    }
 }
 
 void setup()
@@ -109,13 +118,13 @@ void setup()
 
     // Init PID controllers
     roll_pid.SetMode(AUTOMATIC);
-    roll_pid.SetSampleTime(main_sample_time);
+    roll_pid.SetSampleTime(ATTITUDE_LOOP_PERIOD);
     roll_pid.SetOutputLimits(roll_min, roll_max);
     pitch_pid.SetMode(AUTOMATIC);
-    pitch_pid.SetSampleTime(main_sample_time);
+    pitch_pid.SetSampleTime(ATTITUDE_LOOP_PERIOD);
     pitch_pid.SetOutputLimits(pitch_min, pitch_max);
     yaw_pid.SetMode(AUTOMATIC);
-    yaw_pid.SetSampleTime(main_sample_time);
+    yaw_pid.SetSampleTime(ATTITUDE_LOOP_PERIOD);
     yaw_pid.SetOutputLimits(yaw_min, yaw_max);
 
     // Wait for motors going to working mode.
@@ -177,8 +186,8 @@ void readSensor()
         if (pitch < 0) pitch = -M_PI - pitch;
         yaw = -orientation.heading * M_PI / 180;
 
-        roll_filter.SetInputs(roll, gyro_event.gyro.x)
-        pitch_filter.SetInputs(pitch, gyro_event.gyro.y)
+        roll_filter.SetInputs(roll, gyro_event.gyro.x);
+        pitch_filter.SetInputs(pitch, gyro_event.gyro.y);
         roll_filter.Compute();
         pitch_filter.Compute();
         roll = roll_filter.GetOutput();
