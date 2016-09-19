@@ -44,8 +44,9 @@ IMUComplementaryFilter pitch_filter = IMUComplementaryFilter(0.01, 0.001,
 // See wiki to check motor positions
 Motor motor_1(12);
 Motor motor_2(11);
-Motor motor_3(10);
-Motor motor_4(9);
+Motor motor_3(8);
+Motor motor_4(7);
+// Do not use pins 9 and 10 because Timer2 is already being used.
 
 double thrust = 140;
 double roll_s = 0, roll, roll_u;
