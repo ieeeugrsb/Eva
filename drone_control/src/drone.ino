@@ -35,9 +35,9 @@ Adafruit_LSM303_Accel_Unified accel = Adafruit_LSM303_Accel_Unified(30301);
 Adafruit_LSM303_Mag_Unified   mag   = Adafruit_LSM303_Mag_Unified(30302);
 
 // Orientation angle filters
-IMUComplementaryFilter roll_filter = IMUComplementaryFilter(0.01, 0.001,
+IMUComplementaryFilter roll_filter = IMUComplementaryFilter(0.04, 0.00001,
     SENSOR_SAMPLE_TIME);
-IMUComplementaryFilter pitch_filter = IMUComplementaryFilter(0.01, 0.001,
+IMUComplementaryFilter pitch_filter = IMUComplementaryFilter(0.04, 0.00001,
     SENSOR_SAMPLE_TIME);
 
 // Create motors instance and start in Working-Mode.
