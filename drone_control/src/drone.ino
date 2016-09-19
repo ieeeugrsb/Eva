@@ -68,14 +68,13 @@ const double yaw_min=-75, yaw_max=75;
 PID roll_pid(&roll, &roll_u, &roll_s, roll_Kp, roll_Ki, roll_Kd, DIRECT);
 PID pitch_pid(&pitch, &pitch_u, &pitch_s, pitch_Kp, pitch_Ki, pitch_Kd, DIRECT);
 PID yaw_pid(&yaw, &yaw_u, &yaw_s, yaw_Kp, yaw_Ki, yaw_Kd, DIRECT);
-const unsigned int main_sample_time = 10;  // in ms
-
-//Print freq counter
-const int print_sample_time = 1000;  // in ms
-unsigned long print_freq_count= 0;
 
 //loop control
-bool next_step = true;
+bool main_loop_step = true;
+bool attitude_loop_step = true;
+byte attitude_loop_count = 0;
+bool print_loop_step = true;
+byte print_loop_count = 0;
 
 
 void initSensors()
@@ -103,7 +102,7 @@ void setup()
     Serial.begin(9600);
 
     // Set internal timer
-    FlexiTimer2::set(main_sample_time, activateStep);
+    FlexiTimer2::set(MAIN_LOOP_PERIOD, onTimer2Event);
 
     // Init sensors
     initSensors();
@@ -126,52 +125,88 @@ void setup()
     FlexiTimer2::start();
 }
 
-void activateStep()
+void onTimer2Event()
 {
-    next_step = true;
+    main_loop_step = true;
+
+    if (attitude_loop_count >= ATTITUDE_LOOP_MULT)
+    {
+        #ifdef DEBUG
+        if (attitude_loop_step == true)
+        {
+            Serial.println("Last attitude loop iteration did not finish on "
+            "time or you forgot to set attitude_loop_step to false");
+        }
+        #endif
+        attitude_loop_step = true;
+        attitude_loop_count = 0;
+    }
+
+    if (print_loop_count >= PRINT_LOOP_MULT)
+    {
+        #ifdef DEBUG
+        if (print_loop_step == true)
+        {
+            Serial.println("Last print loop iteration did not finish on time "
+            "or you forgot to set print_loop_step to false");
+        }
+        #endif
+        print_loop_step = true;
+        print_loop_count = 0;
+    }
 }
 
 void readSensor()
 {
     sensors_event_t accel_event;
     sensors_event_t mag_event;
+    sensors_event_t gyro_event;
     sensors_vec_t   orientation;
 
     // Calculate pitch and roll from the raw accelerometer data.
     accel.getEvent(&accel_event);
     mag.getEvent(&mag_event);
+    gyro.getEvent(&gyro_event);
+
     if (dof.accelGetOrientation(&accel_event, &orientation) &&
         dof.magGetOrientation(SENSOR_AXIS_Z, &mag_event, &orientation))
     {
         roll = orientation.roll * M_PI / 180;
         pitch = orientation.pitch * M_PI / 180;
         if (pitch >= 0) pitch = M_PI - pitch;
-        if (pitch < 0) pitch = M_PI - pitch;
+        if (pitch < 0) pitch = -M_PI - pitch;
         yaw = -orientation.heading * M_PI / 180;
+
+        roll_filter.SetInputs(roll, gyro_event.gyro.x)
+        pitch_filter.SetInputs(pitch, gyro_event.gyro.y)
+        roll_filter.Compute();
+        pitch_filter.Compute();
+        roll = roll_filter.GetOutput();
+        pitch = pitch_filter.GetOutput();
     }
 }
 
 void loop()
 {
-    if (next_step == true)
+    if (main_loop_step == true)
     {
-        next_step = false;
-        attitudeControlLoop();
+        main_loop_step = false;
+    }
 
-        if (print_freq_count >= print_sample_time / main_sample_time)
-        {
-            showSensorData();
-            showControlInputs();
-            print_freq_count = 0;
-        }
-        else
-        {
-            ++print_freq_count;
-        }
+    if (attitude_loop_step == true)
+    {
+        attitudeLoop();
+        attitude_loop_step = false;
+    }
+
+    if (print_loop_step == true)
+    {
+        printLoop();
+        print_loop_step = false;
     }
 }
 
-void attitudeControlLoop()
+void attitudeLoop()
 {
     // Measure states
     readSensor();
@@ -202,6 +237,12 @@ void attitudeControlLoop()
     motor_2.write(motor2_u);
     motor_3.write(motor3_u);
     motor_4.write(motor4_u);
+}
+
+void printLoop()
+{
+    showSensorData();
+    showControlInputs();
 }
 
 void showSensorData()
