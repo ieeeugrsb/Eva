@@ -40,7 +40,8 @@ void IMUComplementaryFilter::Compute()
 {
     int theta_err = theta_f - theta_acc;
     drift_integrator = drift_integrator + theta_err * sample_time;
-    gyro_integrator = theta_dot - (theta_err * kp + drift_integrator * ki);
+    gyro_integrator = gyro_integrator +
+        (theta_dot - (theta_err * kp + drift_integrator * ki)) * sample_time;
     theta_f = gyro_integrator;
 }
 
