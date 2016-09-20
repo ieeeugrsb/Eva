@@ -50,10 +50,10 @@ Motor motor_4(7);
 // Do not use pins 9 and 10 because Timer2 is already being used.
 
 double thrust = 140;
-double roll_s = 0, roll, roll_u;
-double pitch_s = 0, pitch, pitch_u;
-double yaw_s = 0, yaw, yaw_u;
-int motor1_u, motor2_u, motor3_u, motor4_u;
+double roll_s = 0, roll=0, roll_u=0;
+double pitch_s = 0, pitch=0, pitch_u=0;
+double yaw_s = 0, yaw=0, yaw_u=0;
+int motor1_u=0, motor2_u=0, motor3_u=0, motor4_u=0;
 
 //Define tuning parameters
 double roll_Kp=5, roll_Ki=0.05, roll_Kd=0.0;
