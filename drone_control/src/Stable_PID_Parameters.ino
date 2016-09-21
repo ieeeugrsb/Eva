@@ -16,7 +16,7 @@ double theta_acc;
 double current_angle;
 double acceleration_x;
 
-double thrust = 0;
+int thrust = 0;
 double roll_s = 0, roll = 0, roll_u=0;
 double pitch_s = 0, pitch, pitch_u;
 double yaw_s = 0, yaw, yaw_u;
@@ -46,7 +46,7 @@ const int MOTOR_FL = 10;    // PWM pin for Front-Left Motor
 const int MOTOR_FR =  9;    // PWM pin for Front-Right Motor
 
 //Define tuning parameters
-double roll_Kp=0.2, roll_Ki=0.0, roll_Kd=0.2;
+double roll_Kp=0.10, roll_Ki=0.05, roll_Kd=0.05;
 //double pitch_Kp=2, pitch_Ki=0.1, pitch_Kd=0.0;
 //double yaw_Kp=5, yaw_Ki=0.05, yaw_Kd=0.0;
 
@@ -84,8 +84,8 @@ void setup()
 {
   Serial.begin(9600);
   analogWrite(10,0);
-  analogWrite(11, 0);
-  delay(2000);
+  delay(10);
+  analogWrite(11,0);
   // Init PID controllers
   roll_pid.SetMode(AUTOMATIC);
   roll_pid.SetSampleTime(sample_time);
@@ -104,7 +104,7 @@ void readSensor()
   sensors_event_t accel_event;
   sensors_event_t mag_event;
   sensors_vec_t   orientation;
-  sensors_event_t gyro_event; 
+  sensors_event_t gyro_event;
 
   // Calculate pitch and roll from the raw accelerometer data.
   accel.getEvent(&accel_event);
@@ -113,18 +113,18 @@ void readSensor()
   gyro.getEvent(&gyro_event);
 
   if (dof.accelGetOrientation(&accel_event, &orientation))
-  { 
+  {
     theta_acc = -orientation.roll-3.5;
-  
+
   }
-  
+
   // Read gyro output
   gyro_x = -1*180*gyro_event.gyro.x/M_PI;
   //roll_filter.SetInputs(roll,gyro_x);
   //roll_filter.Compute();
   //roll = roll_filter.GetOutput();
 
-  
+
 }
 
 // gyro_angle() function is written temporally apart to obtain the angle from gyro => to be added to read_sensor().
@@ -150,6 +150,10 @@ return roll;
 
 void loop()
 {
+    if (Serial.available() > 0) {
+        thrust = Serial.parseInt();
+    }
+
   unsigned long currentMillis = millis();
 
     if (currentMillis - previousMillis >= interval) {
@@ -182,4 +186,4 @@ int Ajustar(int variable, int minimo, int maximo){ //Ajusta una variable entre d
   if (variable > maximo) variable=maximo;
   if (variable < minimo) variable=minimo;
   return variable;
-} 
+}
