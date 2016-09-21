@@ -16,7 +16,7 @@ double theta_acc;
 double current_angle;
 double acceleration_x;
 
-double thrust = 0;
+int thrust = 0;
 double roll_s = 0, roll = 0, roll_u=0;
 double pitch_s = 0, pitch, pitch_u;
 double yaw_s = 0, yaw, yaw_u;
@@ -104,7 +104,7 @@ void readSensor()
   sensors_event_t accel_event;
   sensors_event_t mag_event;
   sensors_vec_t   orientation;
-  sensors_event_t gyro_event; 
+  sensors_event_t gyro_event;
 
   // Calculate pitch and roll from the raw accelerometer data.
   accel.getEvent(&accel_event);
@@ -113,18 +113,18 @@ void readSensor()
   gyro.getEvent(&gyro_event);
 
   if (dof.accelGetOrientation(&accel_event, &orientation))
-  { 
+  {
     theta_acc = -orientation.roll-3.5;
-  
+
   }
-  
+
   // Read gyro output
   gyro_x = -1*180*gyro_event.gyro.x/M_PI;
   //roll_filter.SetInputs(roll,gyro_x);
   //roll_filter.Compute();
   //roll = roll_filter.GetOutput();
 
-  
+
 }
 
 // gyro_angle() function is written temporally apart to obtain the angle from gyro => to be added to read_sensor().
@@ -150,6 +150,10 @@ return roll;
 
 void loop()
 {
+    if (Serial.available() > 0) {
+        thrust = Serial.parseInt();
+    }
+
   unsigned long currentMillis = millis();
 
     if (currentMillis - previousMillis >= interval) {
