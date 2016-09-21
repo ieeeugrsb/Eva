@@ -1,0 +1,22 @@
+Instructions to visualize the Data from the Serial Port.
+########################################################
+
+Edit Python script with you Serial Port. Something like this: 
+
+port = "/dev/ttyACMX" 
+
+run the script 
+	
+### ./read_serial.py 
+
+A new file will be created. Roll.txt where the data captured from the serial 
+will be stored. To visualize the data run in terminal
+
+###  gnuplot liveplot.gnu
+
+Note1: the data shown in the active window will only be refreshed if a key is 
+pushed, so just push the "a" keyboard key.
+
+Note2: Sometime the serial port gives weird characters, if the data is going to 
+be processed it is better to look into the first lines if something is weird.
+
