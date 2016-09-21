@@ -20,10 +20,7 @@
 #include <Adafruit_LSM303_U.h>
 #include <Adafruit_L3GD20_U.h>
 #include <Adafruit_9DOF.h>
-
 #include <PID_v1.h>
-
-#include <FlexiTimer2.h>
 
 #include "Common.h"
 #include "Motor.h"
@@ -71,11 +68,7 @@ PID pitch_pid(&pitch, &pitch_u, &pitch_s, pitch_Kp, pitch_Ki, pitch_Kd, DIRECT);
 PID yaw_pid(&yaw, &yaw_u, &yaw_s, yaw_Kp, yaw_Ki, yaw_Kd, DIRECT);
 
 //loop control
-bool main_loop_step = true;
-bool attitude_loop_step = true;
-byte attitude_loop_count = 0;
-bool print_loop_step = true;
-byte print_loop_count = 0;
+unsigned long last_attitude_loop_time = 0;
 
 
 void initSensors()
@@ -110,9 +103,6 @@ void setup()
     // Setup PC communication.
     Serial.begin(9600);
 
-    // Set internal timer
-    FlexiTimer2::set(MAIN_LOOP_PERIOD, onTimer2Event);
-
     // Init sensors
     initSensors();
 
@@ -129,40 +119,6 @@ void setup()
 
     // Wait for motors going to working mode.
     delay(2000);
-
-    // Start timer
-    FlexiTimer2::start();
-}
-
-void onTimer2Event()
-{
-    main_loop_step = true;
-
-    if (attitude_loop_count >= ATTITUDE_LOOP_MULT)
-    {
-        #ifdef DEBUG
-        if (attitude_loop_step == true)
-        {
-            Serial.println("Last attitude loop iteration did not finish on "
-            "time or you forgot to set attitude_loop_step to false");
-        }
-        #endif
-        attitude_loop_step = true;
-        attitude_loop_count = 0;
-    }
-
-    if (print_loop_count >= PRINT_LOOP_MULT)
-    {
-        #ifdef DEBUG
-        if (print_loop_step == true)
-        {
-            Serial.println("Last print loop iteration did not finish on time "
-            "or you forgot to set print_loop_step to false");
-        }
-        #endif
-        print_loop_step = true;
-        print_loop_count = 0;
-    }
 }
 
 void readSensor()
@@ -197,61 +153,42 @@ void readSensor()
 
 void loop()
 {
-    if (main_loop_step == true)
+    // Do iteration or pass if next iteration doesn't have to start yet
+    unsigned long time_now = millis();
+    if(time_now- last_attitude_loop_time >= ATTITUDE_LOOP_PERIOD)
     {
-        main_loop_step = false;
+        last_attitude_loop_time = time_now;
+        
+        // Measure states
+        readSensor();
+
+        #ifdef DEBUG
+        // Print sensor data
+        showSensorData();
+        #endif
+
+        // Compute control inputs
+        // PID library decides itself when its time to update
+        // its output according to sample time
+        roll_pid.Compute();
+        pitch_pid.Compute();
+        //yaw_pid.Compute();
+
+        // Apply inputs
+        motor1_u = thrust + roll_u; // - yaw_u;
+        motor2_u = thrust - pitch_u; // + yaw_u;
+        motor3_u = thrust - roll_u; // - yaw_u;
+        motor4_u = thrust + pitch_u; // + yaw_u;
+
+        #ifdef DEBUG
+        showControlInputs();
+        #endif
+
+        motor_1.write(motor1_u);
+        motor_2.write(motor2_u);
+        motor_3.write(motor3_u);
+        motor_4.write(motor4_u);
     }
-
-    if (attitude_loop_step == true)
-    {
-        attitudeLoop();
-        attitude_loop_step = false;
-    }
-
-    if (print_loop_step == true)
-    {
-        printLoop();
-        print_loop_step = false;
-    }
-}
-
-void attitudeLoop()
-{
-    // Measure states
-    readSensor();
-
-    #ifdef DEBUG
-    // Print sensor data
-    showSensorData();
-    #endif
-
-    // Compute control inputs
-    // PID library decides itself when its time to update
-    // its output according to sample time
-    roll_pid.Compute();
-    pitch_pid.Compute();
-    //yaw_pid.Compute();
-
-    // Apply inputs
-    motor1_u = thrust + roll_u; // - yaw_u;
-    motor2_u = thrust - pitch_u; // + yaw_u;
-    motor3_u = thrust - roll_u; // - yaw_u;
-    motor4_u = thrust + pitch_u; // + yaw_u;
-
-    #ifdef DEBUG
-    showControlInputs();
-    #endif
-
-    motor_1.write(motor1_u);
-    motor_2.write(motor2_u);
-    motor_3.write(motor3_u);
-    motor_4.write(motor4_u);
-}
-
-void printLoop()
-{
-    showSensorData();
-    showControlInputs();
 }
 
 void showSensorData()
