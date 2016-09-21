@@ -23,6 +23,7 @@ IMUComplementaryFilter::IMUComplementaryFilter(double kp, double ki,
 {
     this->kp = kp;
     this->ki = ki;
+    this->sample_time = sample_time;
     this->theta_f = 0.0;
     this->theta_dot = 0.0;
     this->theta_acc = 0.0;
@@ -39,9 +40,10 @@ Uses forward euler integration
 void IMUComplementaryFilter::Compute()
 {
     int theta_err = theta_f - theta_acc;
-    drift_integrator = drift_integrator + theta_err * sample_time;
+    drift_integrator = drift_integrator + theta_err * sample_time/1000;
     gyro_integrator = gyro_integrator +
-        (theta_dot - (theta_err * kp + drift_integrator * ki)) * sample_time;
+        (theta_dot - (theta_err * kp + drift_integrator * ki)) *
+        sample_time/1000;
     theta_f = gyro_integrator;
 }
 
