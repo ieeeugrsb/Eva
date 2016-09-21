@@ -36,17 +36,17 @@ Adafruit_LSM303_Mag_Unified   mag   = Adafruit_LSM303_Mag_Unified(30302);
 Adafruit_L3GD20_Unified       gyro  = Adafruit_L3GD20_Unified(30303);
 
 // Orientation angle filters
-IMUComplementaryFilter roll_filter = IMUComplementaryFilter(0.04, 0.00001,
-    ATTITUDE_LOOP_PERIOD);
-IMUComplementaryFilter pitch_filter = IMUComplementaryFilter(0.04, 0.00001,
-    ATTITUDE_LOOP_PERIOD);
+IMUComplementaryFilter roll_filter = IMUComplementaryFilter(ROLL_FILTER_KP,
+    ROLL_FILTER_KI, ATTITUDE_LOOP_PERIOD);
+IMUComplementaryFilter pitch_filter = IMUComplementaryFilter(PITCH_FILTER_KP,
+    PITCH_FILTER_KI, ATTITUDE_LOOP_PERIOD);
 
 // Create motors instance and start in Working-Mode.
 // See wiki to check motor positions
-Motor motor_1(12);
-Motor motor_2(11);
-Motor motor_3(8);
-Motor motor_4(7);
+Motor motor_1(MOTOR_1_PIN);
+Motor motor_2(MOTOR_2_PIN);
+Motor motor_3(MOTOR_3_PIN);
+Motor motor_4(MOTOR_4_PIN);
 // Do not use pins 9 and 10 because Timer2 is already being used.
 
 double thrust = 140;
@@ -56,9 +56,9 @@ double yaw_s = 0, yaw=0, yaw_u=0;
 int motor1_u=0, motor2_u=0, motor3_u=0, motor4_u=0;
 
 //Define tuning parameters
-double roll_Kp=5, roll_Ki=0.05, roll_Kd=0.0;
-double pitch_Kp=5, pitch_Ki=0.05, pitch_Kd=0.0;
-double yaw_Kp=5, yaw_Ki=0.05, yaw_Kd=0.0;
+double roll_Kp=ROLL_PID_KP, roll_Ki=ROLL_PID_KI, roll_Kd=ROLL_PID_KD;
+double pitch_Kp=PITCH_PID_KP, pitch_Ki=PITCH_PID_KI, pitch_Kd=PITCH_PID_KD;
+double yaw_Kp=YAW_PID_KP, yaw_Ki=YAW_PID_KI, yaw_Kd=YAW_PID_KD;
 
 // Output limits
 const double roll_min=-75, roll_max=75;

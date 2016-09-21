@@ -26,4 +26,33 @@
 #define PRINT_LOOP_MULT 100
 #define PRINT_LOOP_PERIOD MAIN_LOOP_PERIOD*PRINT_LOOP_MULT
 
+// Motor control pins
+#define MOTOR_1_PIN 12
+#define MOTOR_2_PIN 11
+#define MOTOR_3_PIN 10
+#define MOTOR_4_PIN 9
+
+// Roll sensor complementary filter
+#define ROLL_FILTER_KP 200.0
+#define ROLL_FILTER_KI 40.0
+
+// Pitch sensor complementary filter
+#define PITCH_FILTER_KP 200.0
+#define PITCH_FILTER_KI 40.0
+
+// Roll PID parameters
+#define ROLL_PID_KP 0.2
+#define ROLL_PID_KI 0.0
+#define ROLL_PID_KD 0.2
+
+// Pitch PID parameters
+#define PITCH_PID_KP 0.0
+#define PITCH_PID_KI 0.0
+#define PITCH_PID_KD 0.0
+
+// Yaw PID parameteres
+#define YAW_PID_KP 0.0
+#define YAW_PID_KI 0.0
+#define YAW_PID_KD 0.0
+
 #endif
