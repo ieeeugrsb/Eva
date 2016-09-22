@@ -52,6 +52,12 @@ double pitch_s = 0, pitch=0, pitch_u=0;
 double yaw_s = 0, yaw=0, yaw_u=0;
 int motor1_u=0, motor2_u=0, motor3_u=0, motor4_u=0;
 
+double roll_acc = 0;
+double pitch_acc = 0;
+
+double gyro_x = 0;
+double gyro_y = 0;
+
 //Define tuning parameters
 double roll_Kp=ROLL_PID_KP, roll_Ki=ROLL_PID_KI, roll_Kd=ROLL_PID_KD;
 double pitch_Kp=PITCH_PID_KP, pitch_Ki=PITCH_PID_KI, pitch_Kd=PITCH_PID_KD;
@@ -136,17 +142,17 @@ void readSensor()
     if (dof.accelGetOrientation(&accel_event, &orientation) &&
         dof.magGetOrientation(SENSOR_AXIS_Z, &mag_event, &orientation))
     {
-        roll = orientation.roll * M_PI / 180;
-        pitch = orientation.pitch * M_PI / 180;
-        if (pitch >= 0) pitch = M_PI - pitch;
-        if (pitch < 0) pitch = -M_PI - pitch;
-        yaw = -orientation.heading * M_PI / 180;
+        roll_acc = orientation.roll;
+        pitch_acc = orientation.pitch;
+        if (pitch_acc >= 0) pitch_acc = M_PI - pitch_acc;
+        if (pitch_acc < 0) pitch_acc = -M_PI - pitch_acc;
+        yaw = -orientation.heading;
 
         gyro_x = -1*180*gyro_event.gyro.x/M_PI;
         gyro_y = 1*180*gyro_event.gyro.y/M_PI;
 
-        roll_filter.SetInputs(roll, gyro_x);
-        pitch_filter.SetInputs(pitch, gyro_y);
+        roll_filter.SetInputs(roll_acc, gyro_x);
+        pitch_filter.SetInputs(pitch_acc, gyro_y);
         roll_filter.Compute();
         pitch_filter.Compute();
         roll = roll_filter.GetOutput();
@@ -168,35 +174,34 @@ void loop()
     {
         last_attitude_loop_time = time_now;
 
-        // Measure states
+        // read orientation
         readSensor();
-
-        #ifdef DEBUG
-        // Print sensor data
-        showSensorData();
-        #endif
 
         // Compute control inputs
         // PID library decides itself when its time to update
         // its output according to sample time
         roll_pid.Compute();
-        pitch_pid.Compute();
-        //yaw_pid.Compute();
+        // TODO: Uncomment to enable
+        // pitch_pid.Compute();
+        // yaw_pid.Compute();
 
         // Apply inputs
-        motor1_u = thrust + roll_u; // - yaw_u;
-        motor2_u = thrust - pitch_u; // + yaw_u;
-        motor3_u = thrust - roll_u; // - yaw_u;
-        motor4_u = thrust + pitch_u; // + yaw_u;
+        motor1_u = thrust + roll_u - yaw_u;
+        motor2_u = thrust - pitch_u + yaw_u;
+        motor3_u = thrust - roll_u - yaw_u;
+        motor4_u = thrust + pitch_u + yaw_u;
+
+        motor_2 = 0;
+        motor_4 = 0;
+
+        int u_1 = motor_1.write(motor1_u);
+        int u_2 = motor_2.write(motor2_u);
+        int u_3 = motor_3.write(motor3_u);
+        int u_4 = motor_4.write(motor4_u);
 
         #ifdef DEBUG
-        showControlInputs();
+        Serial.print(roll);Serial.print(" ");Serial.print(motor1_u);Serial.print(" ");Serial.print(motor3_u);Serial.print(" ");Serial.print(u_1);Serial.print(" ");Serial.println(u_3);
         #endif
-
-        motor_1.write(motor1_u);
-        motor_2.write(motor2_u);
-        motor_3.write(motor3_u);
-        motor_4.write(motor4_u);
     }
 }
 

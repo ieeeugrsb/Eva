@@ -25,7 +25,7 @@ class Motor
     public:
         Motor(int pin);
         void stop();
-        void write(int value);
+        int write(int value);
 
     private:
         int pin;
