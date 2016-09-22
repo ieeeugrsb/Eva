@@ -32,6 +32,16 @@
 #define MOTOR_3_PIN 12
 #define MOTOR_4_PIN 9
 
+// Min and max values for motor power
+#define MOTOR_1_ZERO 140
+#define MOTOR_2_ZERO 140
+#define MOTOR_3_ZERO 162
+#define MOTOR_4_ZERO 140
+#define MOTOR_1_MAX 254
+#define MOTOR_2_MAX 254
+#define MOTOR_3_MAX 254
+#define MOTOR_4_MAX 254
+
 // Orientation sensor offset
 #define ROLL_OFFSET -3.5
 #define PITCH_OFFSET 0.0

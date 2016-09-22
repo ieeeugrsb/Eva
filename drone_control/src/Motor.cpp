@@ -16,10 +16,12 @@
 #include "Arduino.h"
 #include "Motor.h"
 
-Motor::Motor(int pin)
+Motor::Motor(int pin, int zero_val, int max_val)
 {
     // There is no need to set pinMode for PWM signals.
     this->pin = pin;
+    this->MOTOR_ZERO = constrain(zero_val, 0, 255);
+    this->MOTOR_MAX = constrain(max_val, 0, 255);
 
     // Set to working mode going to zero position.
     analogWrite(pin, 0);
@@ -32,8 +34,7 @@ void Motor::stop()
 
 int Motor::write(int value)
 {
-    int v = value + MOTOR_ZERO;
-    v = constrain(v, MOTOR_ZERO, MOTOR_MAX);
+    int final_value = constrain(value + MOTOR_ZERO, MOTOR_ZERO, MOTOR_MAX);
 
     analogWrite(this->pin, final_value);
 

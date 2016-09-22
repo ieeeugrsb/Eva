@@ -40,10 +40,10 @@ IMUComplementaryFilter pitch_filter = IMUComplementaryFilter(PITCH_FILTER_KP,
 
 // Create motors instance and start in Working-Mode.
 // See wiki to check motor positions
-Motor motor_1(MOTOR_1_PIN);
-Motor motor_2(MOTOR_2_PIN);
-Motor motor_3(MOTOR_3_PIN);
-Motor motor_4(MOTOR_4_PIN);
+Motor motor_1(MOTOR_1_PIN, MOTOR_1_ZERO, MOTOR_1_MAX);
+Motor motor_2(MOTOR_2_PIN, MOTOR_2_ZERO, MOTOR_2_MAX);
+Motor motor_3(MOTOR_3_PIN, MOTOR_3_ZERO, MOTOR_3_MAX);
+Motor motor_4(MOTOR_4_PIN, MOTOR_4_ZERO, MOTOR_4_MAX);
 // Do not use pins 9 and 10 because Timer2 is already being used.
 
 double thrust = 0;
@@ -164,7 +164,7 @@ void loop()
 {
     // Thrust selection
     if (Serial.available() > 0) {
-        int command = Serial.read()
+        int command = Serial.read();
         thrust = Serial.parseInt();
     }
 
@@ -192,8 +192,8 @@ void loop()
         motor3_u = thrust - roll_u - yaw_u;
         motor4_u = thrust + pitch_u + yaw_u;
 
-        motor_2 = 0;
-        motor_4 = 0;
+        motor2_u = 0;
+        motor4_u = 0;
 
         int u_1 = motor_1.write(motor1_u);
         int u_2 = motor_2.write(motor2_u);

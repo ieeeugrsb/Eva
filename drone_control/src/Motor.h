@@ -17,18 +17,18 @@
 
 #include "Arduino.h"
 
-const int MOTOR_ZERO = 140;
-const int MOTOR_MAX  = 254; // 255 enters configuration mode
 
 class Motor
 {
     public:
-        Motor(int pin);
+        Motor(int pin, int zero_val, int max_val);
         void stop();
         int write(int value);
 
     private:
         int pin;
+        int MOTOR_ZERO;
+        int MOTOR_MAX;
 };
 
 #endif
