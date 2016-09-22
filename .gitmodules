@@ -16,6 +16,3 @@
 [submodule "drone_control/lib/Arduino-PID-Library"]
 	path = drone_control/lib/Arduino-PID-Library
 	url = https://github.com/br3ttb/Arduino-PID-Library.git
-[submodule "drone_control/lib/flexitimer2"]
-	path = drone_control/lib/flexitimer2
-	url = https://github.com/wimleers/flexitimer2.git

@@ -22,17 +22,30 @@ Motor::Motor(int pin)
     this->pin = pin;
 
     // Set to working mode going to zero position.
-    analogWrite(pin, MOTOR_ZERO);
+    analogWrite(pin, 0);
 }
 
 void Motor::stop()
 {
-    analogWrite(this->pin, MOTOR_ZERO);
+    analogWrite(this->pin, 0);
 }
 
-void Motor::write(int value)
+int Motor::write(int value)
 {
-    int final_value = map(value, 0, 255, MOTOR_ZERO, MOTOR_MAX);
-    
+    int v = value + MOTOR_ZERO;
+    if (v < MOTOR_ZERO)
+    {
+        v = MOTOR_ZERO;
+    }
+    else if (v > MOTOR_MAX)
+    {
+        v = MOTOR_MAX;
+    }
+
+    //int final_value = map(v, 0, 255, MOTOR_ZERO, MOTOR_MAX);
+    int final_value = v;
+
     analogWrite(this->pin, final_value);
+
+    return final_value;
 }

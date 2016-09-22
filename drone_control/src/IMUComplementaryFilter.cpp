@@ -16,6 +16,7 @@
 */
 
 #include "IMUComplementaryFilter.h"
+#include "Arduino.h"
 
 
 IMUComplementaryFilter::IMUComplementaryFilter(double kp, double ki,
@@ -28,6 +29,8 @@ IMUComplementaryFilter::IMUComplementaryFilter(double kp, double ki,
     this->theta_dot = 0.0;
     this->theta_acc = 0.0;
 
+    this->sample_time = sample_time;
+
     this->gyro_integrator = 0.0;
     this->drift_integrator = 0.0;
 }
@@ -39,12 +42,12 @@ Uses forward euler integration
 */
 void IMUComplementaryFilter::Compute()
 {
-    int theta_err = theta_f - theta_acc;
-    drift_integrator = drift_integrator + theta_err * sample_time/1000;
-    gyro_integrator = gyro_integrator +
+    double theta_err = theta_f - theta_acc;
+    this->drift_integrator += theta_err * sample_time/1000;
+    this->gyro_integrator = gyro_integrator +
         (theta_dot - (theta_err * kp + drift_integrator * ki)) *
         sample_time/1000;
-    theta_f = gyro_integrator;
+    this->theta_f = gyro_integrator;
 }
 
 /*

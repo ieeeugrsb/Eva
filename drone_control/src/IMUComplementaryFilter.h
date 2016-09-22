@@ -30,7 +30,7 @@ class IMUComplementaryFilter
     private:
         double kp;
         double ki;
-        int sample_time;  // in ms
+        double sample_time;  // in ms
         double gyro_integrator;
         double drift_integrator;
         double theta_acc;  // in rad

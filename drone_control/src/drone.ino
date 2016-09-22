@@ -20,10 +20,7 @@
 #include <Adafruit_LSM303_U.h>
 #include <Adafruit_L3GD20_U.h>
 #include <Adafruit_9DOF.h>
-
 #include <PID_v1.h>
-
-#include <FlexiTimer2.h>
 
 #include "Common.h"
 #include "Motor.h"
@@ -36,29 +33,35 @@ Adafruit_LSM303_Mag_Unified   mag   = Adafruit_LSM303_Mag_Unified(30302);
 Adafruit_L3GD20_Unified       gyro  = Adafruit_L3GD20_Unified(30303);
 
 // Orientation angle filters
-IMUComplementaryFilter roll_filter = IMUComplementaryFilter(0.04, 0.00001,
-    ATTITUDE_LOOP_PERIOD);
-IMUComplementaryFilter pitch_filter = IMUComplementaryFilter(0.04, 0.00001,
-    ATTITUDE_LOOP_PERIOD);
+IMUComplementaryFilter roll_filter = IMUComplementaryFilter(ROLL_FILTER_KP,
+    ROLL_FILTER_KI, ATTITUDE_LOOP_PERIOD);
+IMUComplementaryFilter pitch_filter = IMUComplementaryFilter(PITCH_FILTER_KP,
+    PITCH_FILTER_KI, ATTITUDE_LOOP_PERIOD);
 
 // Create motors instance and start in Working-Mode.
 // See wiki to check motor positions
-Motor motor_1(12);
-Motor motor_2(11);
-Motor motor_3(8);
-Motor motor_4(7);
+Motor motor_1(MOTOR_1_PIN);
+Motor motor_2(MOTOR_2_PIN);
+Motor motor_3(MOTOR_3_PIN);
+Motor motor_4(MOTOR_4_PIN);
 // Do not use pins 9 and 10 because Timer2 is already being used.
 
-double thrust = 140;
-double roll_s = 0, roll, roll_u;
-double pitch_s = 0, pitch, pitch_u;
-double yaw_s = 0, yaw, yaw_u;
-int motor1_u, motor2_u, motor3_u, motor4_u;
+double thrust = 0;
+double roll_s = 0, roll=0, roll_u=0;
+double pitch_s = 0, pitch=0, pitch_u=0;
+double yaw_s = 0, yaw=0, yaw_u=0;
+int motor1_u=0, motor2_u=0, motor3_u=0, motor4_u=0;
+
+double roll_acc = 0;
+double pitch_acc = 0;
+
+double gyro_x = 0;
+double gyro_y = 0;
 
 //Define tuning parameters
-double roll_Kp=5, roll_Ki=0.05, roll_Kd=0.0;
-double pitch_Kp=5, pitch_Ki=0.05, pitch_Kd=0.0;
-double yaw_Kp=5, yaw_Ki=0.05, yaw_Kd=0.0;
+double roll_Kp=ROLL_PID_KP, roll_Ki=ROLL_PID_KI, roll_Kd=ROLL_PID_KD;
+double pitch_Kp=PITCH_PID_KP, pitch_Ki=PITCH_PID_KI, pitch_Kd=PITCH_PID_KD;
+double yaw_Kp=YAW_PID_KP, yaw_Ki=YAW_PID_KI, yaw_Kd=YAW_PID_KD;
 
 // Output limits
 const double roll_min=-75, roll_max=75;
@@ -71,11 +74,7 @@ PID pitch_pid(&pitch, &pitch_u, &pitch_s, pitch_Kp, pitch_Ki, pitch_Kd, DIRECT);
 PID yaw_pid(&yaw, &yaw_u, &yaw_s, yaw_Kp, yaw_Ki, yaw_Kd, DIRECT);
 
 //loop control
-bool main_loop_step = true;
-bool attitude_loop_step = true;
-byte attitude_loop_count = 0;
-bool print_loop_step = true;
-byte print_loop_count = 0;
+unsigned long last_attitude_loop_time = 0;
 
 
 void initSensors()
@@ -110,9 +109,6 @@ void setup()
     // Setup PC communication.
     Serial.begin(9600);
 
-    // Set internal timer
-    FlexiTimer2::set(MAIN_LOOP_PERIOD, onTimer2Event);
-
     // Init sensors
     initSensors();
 
@@ -129,40 +125,6 @@ void setup()
 
     // Wait for motors going to working mode.
     delay(2000);
-
-    // Start timer
-    FlexiTimer2::start();
-}
-
-void onTimer2Event()
-{
-    main_loop_step = true;
-
-    if (attitude_loop_count >= ATTITUDE_LOOP_MULT)
-    {
-        #ifdef DEBUG
-        if (attitude_loop_step == true)
-        {
-            Serial.println("Last attitude loop iteration did not finish on "
-            "time or you forgot to set attitude_loop_step to false");
-        }
-        #endif
-        attitude_loop_step = true;
-        attitude_loop_count = 0;
-    }
-
-    if (print_loop_count >= PRINT_LOOP_MULT)
-    {
-        #ifdef DEBUG
-        if (print_loop_step == true)
-        {
-            Serial.println("Last print loop iteration did not finish on time "
-            "or you forgot to set print_loop_step to false");
-        }
-        #endif
-        print_loop_step = true;
-        print_loop_count = 0;
-    }
 }
 
 void readSensor()
@@ -180,14 +142,17 @@ void readSensor()
     if (dof.accelGetOrientation(&accel_event, &orientation) &&
         dof.magGetOrientation(SENSOR_AXIS_Z, &mag_event, &orientation))
     {
-        roll = orientation.roll * M_PI / 180;
-        pitch = orientation.pitch * M_PI / 180;
-        if (pitch >= 0) pitch = M_PI - pitch;
-        if (pitch < 0) pitch = -M_PI - pitch;
-        yaw = -orientation.heading * M_PI / 180;
+        roll_acc = orientation.roll;
+        pitch_acc = orientation.pitch;
+        if (pitch_acc >= 0) pitch_acc = M_PI - pitch_acc;
+        if (pitch_acc < 0) pitch_acc = -M_PI - pitch_acc;
+        yaw = -orientation.heading;
 
-        roll_filter.SetInputs(roll, gyro_event.gyro.x);
-        pitch_filter.SetInputs(pitch, gyro_event.gyro.y);
+        gyro_x = -1*180*gyro_event.gyro.x/M_PI;
+        gyro_y = 1*180*gyro_event.gyro.y/M_PI;
+
+        roll_filter.SetInputs(roll_acc, gyro_x);
+        pitch_filter.SetInputs(pitch_acc, gyro_y);
         roll_filter.Compute();
         pitch_filter.Compute();
         roll = roll_filter.GetOutput();
@@ -197,61 +162,47 @@ void readSensor()
 
 void loop()
 {
-    if (main_loop_step == true)
-    {
-        main_loop_step = false;
+    // Thrust selection
+    if (Serial.available() > 0) {
+        thrust = Serial.parseInt();
     }
 
-    if (attitude_loop_step == true)
+
+    // Do iteration or pass if next iteration doesn't have to start yet
+    unsigned long time_now = millis();
+    if(time_now - last_attitude_loop_time >= ATTITUDE_LOOP_PERIOD)
     {
-        attitudeLoop();
-        attitude_loop_step = false;
+        last_attitude_loop_time = time_now;
+
+        // read orientation
+        readSensor();
+
+        // Compute control inputs
+        // PID library decides itself when its time to update
+        // its output according to sample time
+        roll_pid.Compute();
+        // TODO: Uncomment to enable
+        // pitch_pid.Compute();
+        // yaw_pid.Compute();
+
+        // Apply inputs
+        motor1_u = thrust + roll_u - yaw_u;
+        motor2_u = thrust - pitch_u + yaw_u;
+        motor3_u = thrust - roll_u - yaw_u;
+        motor4_u = thrust + pitch_u + yaw_u;
+
+        motor_2 = 0;
+        motor_4 = 0;
+
+        int u_1 = motor_1.write(motor1_u);
+        int u_2 = motor_2.write(motor2_u);
+        int u_3 = motor_3.write(motor3_u);
+        int u_4 = motor_4.write(motor4_u);
+
+        #ifdef DEBUG
+        Serial.print(roll);Serial.print(" ");Serial.print(motor1_u);Serial.print(" ");Serial.print(motor3_u);Serial.print(" ");Serial.print(u_1);Serial.print(" ");Serial.println(u_3);
+        #endif
     }
-
-    if (print_loop_step == true)
-    {
-        printLoop();
-        print_loop_step = false;
-    }
-}
-
-void attitudeLoop()
-{
-    // Measure states
-    readSensor();
-
-    #ifdef DEBUG
-    // Print sensor data
-    showSensorData();
-    #endif
-
-    // Compute control inputs
-    // PID library decides itself when its time to update
-    // its output according to sample time
-    roll_pid.Compute();
-    pitch_pid.Compute();
-    //yaw_pid.Compute();
-
-    // Apply inputs
-    motor1_u = thrust + roll_u; // - yaw_u;
-    motor2_u = thrust - pitch_u; // + yaw_u;
-    motor3_u = thrust - roll_u; // - yaw_u;
-    motor4_u = thrust + pitch_u; // + yaw_u;
-
-    #ifdef DEBUG
-    showControlInputs();
-    #endif
-
-    motor_1.write(motor1_u);
-    motor_2.write(motor2_u);
-    motor_3.write(motor3_u);
-    motor_4.write(motor4_u);
-}
-
-void printLoop()
-{
-    showSensorData();
-    showControlInputs();
 }
 
 void showSensorData()
