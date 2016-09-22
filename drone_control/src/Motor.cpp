@@ -33,17 +33,7 @@ void Motor::stop()
 int Motor::write(int value)
 {
     int v = value + MOTOR_ZERO;
-    if (v < MOTOR_ZERO)
-    {
-        v = MOTOR_ZERO;
-    }
-    else if (v > MOTOR_MAX)
-    {
-        v = MOTOR_MAX;
-    }
-
-    //int final_value = map(v, 0, 255, MOTOR_ZERO, MOTOR_MAX);
-    int final_value = v;
+    v = constrain(v, MOTOR_ZERO, MOTOR_MAX);
 
     analogWrite(this->pin, final_value);
 

@@ -164,6 +164,7 @@ void loop()
 {
     // Thrust selection
     if (Serial.available() > 0) {
+        int command = Serial.read()
         thrust = Serial.parseInt();
     }
 
