@@ -32,6 +32,10 @@
 #define MOTOR_3_PIN 10
 #define MOTOR_4_PIN 9
 
+// Orientation sensor offset
+#define ROLL_OFFSET -3.5
+#define PITCH_OFFSET 0.0
+
 // Roll sensor complementary filter
 #define ROLL_FILTER_KP 200.0
 #define ROLL_FILTER_KI 40.0

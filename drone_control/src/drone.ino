@@ -46,7 +46,7 @@ Motor motor_3(MOTOR_3_PIN);
 Motor motor_4(MOTOR_4_PIN);
 // Do not use pins 9 and 10 because Timer2 is already being used.
 
-double thrust = 140;
+double thrust = 0;
 double roll_s = 0, roll=0, roll_u=0;
 double pitch_s = 0, pitch=0, pitch_u=0;
 double yaw_s = 0, yaw=0, yaw_u=0;
@@ -142,8 +142,11 @@ void readSensor()
         if (pitch < 0) pitch = -M_PI - pitch;
         yaw = -orientation.heading * M_PI / 180;
 
-        roll_filter.SetInputs(roll, gyro_event.gyro.x);
-        pitch_filter.SetInputs(pitch, gyro_event.gyro.y);
+        gyro_x = -1*180*gyro_event.gyro.x/M_PI;
+        gyro_y = 1*180*gyro_event.gyro.y/M_PI;
+
+        roll_filter.SetInputs(roll, gyro_x);
+        pitch_filter.SetInputs(pitch, gyro_y);
         roll_filter.Compute();
         pitch_filter.Compute();
         roll = roll_filter.GetOutput();
@@ -153,12 +156,18 @@ void readSensor()
 
 void loop()
 {
+    // Thrust selection
+    if (Serial.available() > 0) {
+        thrust = Serial.parseInt();
+    }
+
+
     // Do iteration or pass if next iteration doesn't have to start yet
     unsigned long time_now = millis();
-    if(time_now- last_attitude_loop_time >= ATTITUDE_LOOP_PERIOD)
+    if(time_now - last_attitude_loop_time >= ATTITUDE_LOOP_PERIOD)
     {
         last_attitude_loop_time = time_now;
-        
+
         // Measure states
         readSensor();
 
